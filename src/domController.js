@@ -4,9 +4,10 @@ const projectDisplay = document.querySelector(".projectDisplay");
 const projectNav = document.querySelector(".projectNav");
 const newProjectBtn = document.querySelector(".button");
 
-newProjectBtn.addEventListener("click", (event) => {});
+// newProjectBtn.addEventListener("click", (event) => {});
 
 export default function createProjectButtons() {
+  projectNav.innerHTML = "";
   const projectButtonList = document.createElement("ul");
   for (const element of projectList.getProjects()) {
     const newButton = document.createElement("button");

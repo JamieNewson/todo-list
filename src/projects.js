@@ -63,7 +63,16 @@ projects.push(proj1);
 projects.push(proj2);
 projects.push(proj3);
 
-function createProject() {}
+const createProjectForm = document.querySelector("#createProject");
+createProjectForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  let name = document.querySelector("#project-name");
+  let description = document.querySelector("#project-description");
+
+  let newProject = new Project(name.value, description.value);
+  projects.push(newProject);
+});
 
 function getProject(projectID) {
   return projects.find(({ id }) => id === projectID);
@@ -105,7 +114,6 @@ function formatToDo(projectID) {
 }
 
 export default {
-  createProject,
   getProjects,
   displayProject,
 };
