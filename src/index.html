@@ -5,5 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>To-Do List</title>
   </head>
-  <body></body>
+  <body>
+    <div class="modal-box">
+      <form action="create-new-project" method="post">
+        <div class="form-row">
+          <label for="name">Name: </label>
+          <input
+            type="text"
+            id="name"
+            name="project_name"
+            minlength="3"
+            maxlength="20"
+          />
+        </div>
+        <div class="form-row">
+          <label for="description">Description: </label>
+          <input
+            type="text"
+            id="description"
+            name="project_description"
+            minlength="0"
+            maxlength="40"
+          />
+        </div>
+        <div class="form-row"><button>Create</button></div>
+      </form>
+    </div>
+
+    <div class="projectNav">
+      <div class="projectListTitle">
+        <h2>Projects:</h2>
+        <button class="newBtn">New</button>
+      </div>
+    </div>
+    <div class="projectDisplay"></div>
+  </body>
 </html>
