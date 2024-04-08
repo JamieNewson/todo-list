@@ -2,7 +2,7 @@ import domController from "./domController.js";
 
 class Project {
   constructor(name, description) {
-    this.id = Math.random().toString(16).slice(2);
+    this.id = `prj-${Math.random().toString(16).slice(4)}`;
     this.name = name;
     this.description = description;
     this.toDos = [];
@@ -73,7 +73,10 @@ createProjectForm.addEventListener("submit", (e) => {
   let description = document.querySelector("#project-description");
 
   let newProject = new Project(name.value, description.value);
+
+  createProjectForm.reset();
   projects.push(newProject);
+
   domController.createButton(newProject);
 });
 
@@ -81,7 +84,7 @@ function getProject(projectID) {
   return projects.find(({ id }) => id === projectID);
 }
 
-function getProjects() {
+function getProjectIDs() {
   let projectInfo = [];
   for (const project of projects) {
     projectInfo.push({ name: project.getName(), id: project.getID() });
@@ -117,6 +120,6 @@ function formatToDo(projectID) {
 }
 
 export default {
-  getProjects,
+  getProjectIDs,
   displayProject,
 };

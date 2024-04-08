@@ -2,17 +2,22 @@ import projectList from "./projects.js";
 
 const projectDisplay = document.querySelector(".projectDisplay");
 const buttonList = document.querySelector(".projectButtonList");
-const newProjectBtn = document.querySelector(".button");
 
-// newProjectBtn.addEventListener("click", (event) => {});
+const newProjectBtn = document.querySelector(".newProjectBtn");
+const newProjectModal = document.querySelector(".modal-box");
+
+newProjectBtn.addEventListener("click", (event) => {
+  newProjectModal.style.display = "block";
+});
 
 function createProjectButtons() {
-  for (const project of projectList.getProjects()) {
+  for (const project of projectList.getProjectIDs()) {
     createButton(project);
   }
 }
 
 function createButton(project) {
+  newProjectModal.style.display = "none";
   const newButton = document.createElement("button");
 
   newButton.innerText = project.name;
