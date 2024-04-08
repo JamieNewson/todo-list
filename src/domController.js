@@ -1,27 +1,30 @@
 import projectList from "./projects.js";
 
 const projectDisplay = document.querySelector(".projectDisplay");
-const projectNav = document.querySelector(".projectNav");
+const buttonList = document.querySelector(".projectButtonList");
 const newProjectBtn = document.querySelector(".button");
 
 // newProjectBtn.addEventListener("click", (event) => {});
 
-export default function createProjectButtons() {
-  projectNav.innerHTML = "";
-  const projectButtonList = document.createElement("ul");
-  for (const element of projectList.getProjects()) {
-    const newButton = document.createElement("button");
-
-    newButton.innerText = element.name;
-    newButton.clasName = "projectBtn";
-    newButton.id = element.id;
-
-    newButton.addEventListener("click", (event) => {
-      projectDisplay.innerHTML = "";
-      projectDisplay.append(projectList.displayProject(event.target.id));
-    });
-
-    projectButtonList.appendChild(newButton);
+function createProjectButtons() {
+  for (const project of projectList.getProjects()) {
+    createButton(project);
   }
-  projectNav.appendChild(projectButtonList);
 }
+
+function createButton(project) {
+  const newButton = document.createElement("button");
+
+  newButton.innerText = project.name;
+  newButton.clasName = "projectBtn";
+  newButton.id = project.id;
+
+  newButton.addEventListener("click", (event) => {
+    projectDisplay.innerHTML = "";
+    projectDisplay.append(projectList.displayProject(event.target.id));
+  });
+
+  buttonList.appendChild(newButton);
+}
+
+export default { createProjectButtons, createButton };

@@ -1,3 +1,5 @@
+import domController from "./domController.js";
+
 class Project {
   constructor(name, description) {
     this.id = Math.random().toString(16).slice(2);
@@ -72,6 +74,7 @@ createProjectForm.addEventListener("submit", (e) => {
 
   let newProject = new Project(name.value, description.value);
   projects.push(newProject);
+  domController.createButton(newProject);
 });
 
 function getProject(projectID) {
