@@ -11,10 +11,10 @@
   align-items: center;
 }
 
-.newProjectBtn {
+.newElementBtn {
   width: 1.5rem;
   height: 1.5rem;
-  margin-left: 50px;
+
   text-align: center;
   background-color: rgb(245, 245, 245);
   border: none;
@@ -22,7 +22,11 @@
   transition: 150ms;
 }
 
-.newProjectBtn:hover {
+.newElementBtn:hover {
   background-color: rgb(230, 230, 230);
   transform: scale(1.1);
+}
+
+.newProjectBtn {
+  margin-left: 50px;
 }

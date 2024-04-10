@@ -1,6 +1,6 @@
 import _ from "lodash";
 import "./styles.css";
-import domController from "./domController";
+import domController from "./domController.js";
 
 if (process.env.NODE_ENV !== "production")
   console.log("Looks like we are in development mode!");

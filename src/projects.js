@@ -1,8 +1,9 @@
 import domController from "./domController.js";
+import toDo from "./todo.js";
 
 class Project {
   constructor(name, description) {
-    this.id = `prj-${Math.random().toString(16).slice(4)}`;
+    this.id = `proj-${Math.random().toString(16).slice(4)}`;
     this.name = name;
     this.description = description;
     this.toDos = [];
@@ -30,7 +31,7 @@ class Project {
     this.toDos.push(toDo);
   }
   getToDos() {
-    return this.toDos;
+    return getToDos(this.id);
   }
 }
 
@@ -40,45 +41,11 @@ const proj1 = new Project("My Project", "My first ever project");
 const proj2 = new Project("My 2nd Project", "My second project");
 const proj3 = new Project("Project No 3", "My third project");
 
-proj1.setToDo({
-  name: "ToDo 1",
-  dueDate: "5/5/24",
-  priority: 1,
-});
-proj1.setToDo({
-  name: "ToDo 2",
-  dueDate: "6/9/24",
-  priority: 2,
-});
-proj2.setToDo({
-  name: "ToDo 3",
-  dueDate: "25/12/24",
-  priority: 3,
-});
-proj3.setToDo({
-  name: "ToDo 4",
-  dueDate: "31/12/24",
-  priority: 3,
-});
-
 projects.push(proj1);
 projects.push(proj2);
 projects.push(proj3);
 
-const createProjectForm = document.querySelector("#createProject");
-createProjectForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-
-  let name = document.querySelector("#project-name");
-  let description = document.querySelector("#project-description");
-
-  let newProject = new Project(name.value, description.value);
-
-  createProjectForm.reset();
-  projects.push(newProject);
-
-  domController.createButton(newProject);
-});
+let activeProjectID = projects[0].getID();
 
 function getProject(projectID) {
   return projects.find(({ id }) => id === projectID);
@@ -92,7 +59,12 @@ function getProjectIDs() {
   return projectInfo;
 }
 
+function getActiveProjectID() {
+  return activeProjectID;
+}
+
 function displayProject(projectID) {
+  activeProjectID = projectID;
   const element = document.createElement("div");
   const projectTitle = document.createElement("h2");
   const projectDescription = document.createElement("p");
@@ -100,26 +72,32 @@ function displayProject(projectID) {
 
   projectTitle.innerText = getProject(projectID).getName();
   projectDescription.innerText = getProject(projectID).getDescription();
-  projectToDos.append(...formatToDo(projectID));
-
   element.appendChild(projectTitle);
   element.appendChild(projectDescription);
+
+  projectToDos.append(...toDo.getToDos(projectID));
   element.appendChild(projectToDos);
 
   return element;
 }
 
-function formatToDo(projectID) {
-  let todoList = [];
-  for (const toDo of getProject(projectID).getToDos()) {
-    const todoElement = document.createElement("li");
-    todoElement.innerText = `Name: ${toDo.name}, Priority: ${toDo.priority}`;
-    todoList.push(todoElement);
-  }
-  return todoList;
-}
+const createProjectForm = document.querySelector("#createProjectForm");
+createProjectForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  let name = document.querySelector("#project-name");
+  let description = document.querySelector("#project-description");
+
+  let newProject = new Project(name.value, description.value);
+
+  createProjectForm.reset();
+  projects.push(newProject);
+
+  domController.createProjectButton(newProject);
+});
 
 export default {
   getProjectIDs,
   displayProject,
+  getActiveProjectID,
 };
