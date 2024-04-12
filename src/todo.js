@@ -1,4 +1,4 @@
-import projects from "./projects.js";
+import projects from "./projectController.js";
 
 class ToDo {
   constructor(parentID, name, description, dueDate, priority) {
@@ -67,16 +67,16 @@ createToDoForm.addEventListener("submit", (e) => {
   createToDoForm.reset();
 });
 
-function getToDos(inputID) {
+function displayToDos(inputID) {
+  const toDoList = document.createElement("ul");
   const projectToDos = toDos.filter(({ parentID }) => parentID === inputID);
 
-  let todoList = [];
   for (const toDo of projectToDos) {
-    const todoElement = document.createElement("li");
-    todoElement.innerText = `Name: ${toDo.getName()}, Date: ${toDo.getDueDate()}, Priority: ${toDo.getPriority()}`;
-    todoList.push(todoElement);
+    const toDoElement = document.createElement("li");
+    toDoElement.innerText = `Name: ${toDo.getName()}, Date: ${toDo.getDueDate()}, Priority: ${toDo.getPriority()}`;
+    toDoList.appendChild(toDoElement);
   }
-  return todoList;
+  return toDoList;
 }
 
 // console.log(
@@ -86,4 +86,4 @@ function getToDos(inputID) {
 // Priority: ${myToDo.getPriority()}`
 // );
 
-export default { getToDos };
+export default { displayToDos };

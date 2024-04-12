@@ -1,5 +1,4 @@
 import domController from "./domController.js";
-import toDo from "./todo.js";
 
 class Project {
   constructor(name, description) {
@@ -48,10 +47,13 @@ projects.push(proj3);
 let activeProjectID = projects[0].getID();
 
 function getProject(projectID) {
-  return projects.find(({ id }) => id === projectID);
+  const currentProject = projects.find(({ id }) => id === projectID);
+  const name = currentProject.getName();
+  const description = currentProject.getDescription();
+  return { name, description };
 }
 
-function getProjectIDs() {
+function getProjectList() {
   let projectInfo = [];
   for (const project of projects) {
     projectInfo.push({ name: project.getName(), id: project.getID() });
@@ -63,41 +65,23 @@ function getActiveProjectID() {
   return activeProjectID;
 }
 
-function displayProject(projectID) {
+function setActiveProjectID(projectID) {
   activeProjectID = projectID;
-  const element = document.createElement("div");
-  const projectTitle = document.createElement("h2");
-  const projectDescription = document.createElement("p");
-  const projectToDos = document.createElement("ul");
-
-  projectTitle.innerText = getProject(projectID).getName();
-  projectDescription.innerText = getProject(projectID).getDescription();
-  element.appendChild(projectTitle);
-  element.appendChild(projectDescription);
-
-  projectToDos.append(...toDo.getToDos(projectID));
-  element.appendChild(projectToDos);
-
-  return element;
+  console.log(activeProjectID);
 }
 
-const createProjectForm = document.querySelector("#createProjectForm");
-createProjectForm.addEventListener("submit", (e) => {
-  e.preventDefault();
+function createProject(name, description) {
+  let newProject = new Project(name, description);
 
-  let name = document.querySelector("#project-name");
-  let description = document.querySelector("#project-description");
-
-  let newProject = new Project(name.value, description.value);
-
-  createProjectForm.reset();
   projects.push(newProject);
 
   domController.createProjectButton(newProject);
-});
+}
 
 export default {
-  getProjectIDs,
-  displayProject,
+  getProject,
   getActiveProjectID,
+  setActiveProjectID,
+  getProjectList,
+  createProject,
 };
