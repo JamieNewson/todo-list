@@ -16,6 +16,7 @@
             name="project_name"
             minlength="3"
             maxlength="20"
+            placeholder="Name"
           />
         </div>
         <div class="form-row">
@@ -26,6 +27,7 @@
             name="project_description"
             minlength="0"
             maxlength="40"
+            placeholder="Description"
           />
         </div>
         <div class="form-row"><button>Create</button></div>
@@ -42,6 +44,7 @@
             name="todo_name"
             minlength="3"
             maxlength="20"
+            placeholder="Name"
           />
         </div>
         <div class="form-row">
@@ -52,6 +55,7 @@
             name="todo_description"
             minlength="0"
             maxlength="40"
+            placeholder="Description"
           />
         </div>
         <div class="form-row">
@@ -66,19 +70,22 @@
             name="todo_priority"
             min="0"
             max="3"
+            placeholder="0"
           />
         </div>
         <div class="form-row"><button>Create</button></div>
       </form>
     </div>
 
-    <div class="projectNav">
-      <div class="projectListTitle">
-        <h2>Projects:</h2>
-        <button class="newElementBtn newProjectBtn">+</button>
+    <div class="container">
+      <div class="projectNav">
+        <div class="projectListTitle">
+          <h2>Projects:</h2>
+          <button class="newElementBtn newProjectBtn">+</button>
+        </div>
+        <ul class="projectList"></ul>
       </div>
-      <ul class="projectList"></ul>
+      <div class="projectDisplay"></div>
     </div>
-    <div class="projectDisplay"></div>
   </body>
 </html>

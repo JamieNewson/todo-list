@@ -1,4 +1,6 @@
 * {
+  padding: 0;
+  margin: 0;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
@@ -6,15 +8,36 @@
   display: none;
 }
 
+.container {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  height: 100vh;
+}
+
+.projectNav {
+  background: rgb(164, 234, 235);
+  background: linear-gradient(
+    90deg,
+    rgba(164, 234, 235, 1) 0%,
+    rgba(119, 232, 233, 1) 100%
+  );
+  padding: 5px;
+}
+
 .projectListTitle {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+}
+
+.projectList {
+  display: flex;
+  flex-direction: column;
 }
 
 .newElementBtn {
   width: 1.5rem;
   height: 1.5rem;
-
   text-align: center;
   background-color: rgb(245, 245, 245);
   border: none;
@@ -25,8 +48,4 @@
 .newElementBtn:hover {
   background-color: rgb(230, 230, 230);
   transform: scale(1.1);
-}
-
-.newProjectBtn {
-  margin-left: 50px;
 }
