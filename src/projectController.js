@@ -67,11 +67,10 @@ function getActiveProjectID() {
 
 function setActiveProjectID(projectID) {
   activeProjectID = projectID;
-  console.log(activeProjectID);
 }
 
-function createProject(name, description) {
-  let newProject = new Project(name, description);
+function createProject(project) {
+  let newProject = new Project(project.name, project.description);
 
   projects.push(newProject);
 

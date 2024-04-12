@@ -1,4 +1,5 @@
-import projects from "./projectController.js";
+import { create } from "lodash";
+import projectController from "./projectController.js";
 
 class ToDo {
   constructor(parentID, name, description, dueDate, priority) {
@@ -8,6 +9,10 @@ class ToDo {
     this.description = description;
     this.dueDate = dueDate;
     this.priority = priority;
+  }
+
+  getID() {
+    return this.id;
   }
 
   setParentId(parentId) {
@@ -45,38 +50,20 @@ class ToDo {
 
 let toDos = [];
 
-const createToDoForm = document.querySelector("#createToDoForm");
-createToDoForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-
-  let name = document.querySelector("#todo-name");
-  let description = document.querySelector("#todo-description");
-  let dueDate = document.querySelector("#todo-due-date");
-  let priority = document.querySelector("#todo-priority");
-
+function createToDo(toDo) {
   let newToDo = new ToDo(
-    projects.getActiveProjectID(),
-    name.value,
-    description.value,
-    dueDate.value,
-    priority.description
+    projectController.getActiveProjectID(),
+    toDo.name,
+    toDo.description,
+    toDo.dueDate,
+    toDo.priority
   );
 
   toDos.push(newToDo);
+}
 
-  createToDoForm.reset();
-});
-
-function displayToDos(inputID) {
-  const toDoList = document.createElement("ul");
-  const projectToDos = toDos.filter(({ parentID }) => parentID === inputID);
-
-  for (const toDo of projectToDos) {
-    const toDoElement = document.createElement("li");
-    toDoElement.innerText = `Name: ${toDo.getName()}, Date: ${toDo.getDueDate()}, Priority: ${toDo.getPriority()}`;
-    toDoList.appendChild(toDoElement);
-  }
-  return toDoList;
+function getToDos(inputID) {
+  return toDos.filter(({ parentID }) => parentID === inputID);
 }
 
 // console.log(
@@ -86,4 +73,4 @@ function displayToDos(inputID) {
 // Priority: ${myToDo.getPriority()}`
 // );
 
-export default { displayToDos };
+export default { getToDos, createToDo };
