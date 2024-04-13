@@ -14,17 +14,39 @@ newProjectBtn.addEventListener("click", (event) => {
 const createProjectForm = document.querySelector("#createProjectForm");
 createProjectForm.addEventListener("submit", (e) => {
   e.preventDefault();
-  newProjectModal.style.display = "none";
 
-  const project = {
-    name: document.querySelector("#project-name").value,
-    description: document.querySelector("#project-description").value,
-  };
+  const projectName = document.querySelector("#project-name");
+  const projectDescription = document.querySelector("#project-description");
+  const projectColor = document.querySelector("#project-color");
 
-  projectController.createProject(project);
+  if (validateProject(projectName, projectDescription)) {
+    newProjectModal.style.display = "none";
 
-  createProjectForm.reset();
+    projectController.createProject(
+      projectName.value,
+      projectDescription.value,
+      projectColor.value
+    );
+
+    createProjectForm.reset();
+  }
 });
+createProjectForm.addEventListener("reset", (e) => {
+  newProjectModal.style.display = "none";
+});
+
+function validateProject(name, description) {
+  let isValid = true;
+  if (name.value.length < 3 || name.value.length > 20) {
+    name.className = "invalid";
+    isValid = false;
+  }
+  if (description.value.length > 40) {
+    description.className = "invalid";
+    isValid = false;
+  }
+  return isValid;
+}
 
 function displayProjectList() {
   for (const project of projectController.getProjectList()) {
@@ -33,11 +55,20 @@ function displayProjectList() {
 }
 
 function createProjectButton(project) {
-  const newButton = document.createElement("button");
+  const element = document.createElement("div");
+  const newButton = document.createElement("span");
+  const icon = document.createElement("span");
+  icon.innerText = "folder";
+  icon.className = "material-symbols-outlined";
+  icon.style.color = project.color;
 
   newButton.innerText = project.name;
   newButton.className = "projectBtn";
   newButton.id = project.id;
+  icon.color = project.labelolor;
+
+  element.appendChild(icon);
+  element.appendChild(newButton);
 
   newButton.addEventListener("click", (e) => {
     projectDisplay.innerHTML = "";
@@ -47,7 +78,7 @@ function createProjectButton(project) {
     projectDisplay.append(createToDoButton());
   });
 
-  projectList.appendChild(newButton);
+  projectList.appendChild(element);
 }
 
 function displayProject(projectID) {
@@ -80,6 +111,9 @@ createToDoForm.addEventListener("submit", (e) => {
   displayToDoList(projectController.getActiveProjectID());
 
   createToDoForm.reset();
+});
+createToDoForm.addEventListener("reset", (e) => {
+  newToDoModal.style.display = "none";
 });
 
 function createToDoButton() {

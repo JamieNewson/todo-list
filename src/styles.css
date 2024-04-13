@@ -1,38 +1,142 @@
 * {
   padding: 0;
   margin: 0;
+  color: rgb(25, 25, 25);
+  font-size: 16px;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.modal-box {
+h2 {
+  font-size: 1.5rem;
+}
+
+h3 {
+  font-size: 1.2rem;
+}
+
+.modal {
   display: none;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.15);
+  width: 100vw;
+  height: 100vh;
+}
+
+.modal-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  width: 320px;
+  height: 400px;
+}
+
+.toDo-modal .modal-box {
+  height: 440px;
+}
+
+.modal-title {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  padding: 15px;
+  margin-bottom: 5px;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 15px;
+}
+
+input {
+  margin-top: 3px;
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
+input:focus {
+  outline: none;
+  border: 1px solid grey;
+}
+
+select {
+  cursor: pointer;
+  margin-top: 3px;
+  padding: 5px;
+}
+
+.invalid {
+  border: 1px solid red;
+}
+
+.form-buttons {
+  flex-direction: row;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+.form-buttons input {
+  margin: 0 0 5px 10px;
+  padding: 8px 12px;
+  border-radius: 8px;
+}
+
+.submit-btn {
+  background-color: #318ce7;
+  color: white;
+  border: none;
+}
+
+.submit-btn:hover {
+  background-color: #2c7fd2;
+}
+
+.cancel-btn {
+  background-color: #d6d6d6;
+  border: none;
+}
+.cancel-btn:hover {
+  background-color: #c5c5c5;
 }
 
 .container {
   display: grid;
-  grid-template-columns: 300px 1fr;
+  grid-template-columns: 275px 1fr;
   height: 100vh;
 }
 
 .projectNav {
-  background: rgb(164, 234, 235);
-  background: linear-gradient(
-    90deg,
-    rgba(164, 234, 235, 1) 0%,
-    rgba(119, 232, 233, 1) 100%
-  );
-  padding: 5px;
+  background: #318ce7;
+  padding: 8px;
+  border-radius: 0px 20px 20px 0;
+}
+
+.projectNav * {
+  color: white;
 }
 
 .projectListTitle {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid white;
 }
 
 .projectList {
   display: flex;
   flex-direction: column;
+}
+
+.projectBtn {
+  margin: 4px;
+  cursor: pointer;
 }
 
 .newElementBtn {
@@ -43,9 +147,12 @@
   border: none;
   border-radius: 50%;
   transition: 150ms;
+  line-height: 1rem;
+  margin-right: 3px;
+  color: #318ce7;
+  cursor: pointer;
 }
 
 .newElementBtn:hover {
-  background-color: rgb(230, 230, 230);
-  transform: scale(1.1);
+  background-color: rgb(225, 225, 225);
 }

@@ -1,11 +1,12 @@
 import domController from "./domController.js";
 
 class Project {
-  constructor(name, description) {
+  constructor(name, description, color = "#fff") {
     this.id = `proj-${Math.random().toString(16).slice(4)}`;
     this.name = name;
     this.description = description;
     this.toDos = [];
+    this.labelColor = color;
   }
 
   getID() {
@@ -32,11 +33,15 @@ class Project {
   getToDos() {
     return getToDos(this.id);
   }
+
+  getColor() {
+    return this.labelColor;
+  }
 }
 
 let projects = [];
 
-const proj1 = new Project("My Project", "My first ever project");
+const proj1 = new Project("My Project", "My first ever project", "#aaa");
 const proj2 = new Project("My 2nd Project", "My second project");
 const proj3 = new Project("Project No 3", "My third project");
 
@@ -56,7 +61,11 @@ function getProject(projectID) {
 function getProjectList() {
   let projectInfo = [];
   for (const project of projects) {
-    projectInfo.push({ name: project.getName(), id: project.getID() });
+    projectInfo.push({
+      name: project.getName(),
+      id: project.getID(),
+      color: project.getColor(),
+    });
   }
   return projectInfo;
 }
@@ -69,8 +78,8 @@ function setActiveProjectID(projectID) {
   activeProjectID = projectID;
 }
 
-function createProject(project) {
-  let newProject = new Project(project.name, project.description);
+function createProject(name, description, color) {
+  let newProject = new Project(name, description, color);
 
   projects.push(newProject);
 
