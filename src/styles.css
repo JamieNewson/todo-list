@@ -142,7 +142,6 @@ select {
 
 .projectBtn {
   margin: 4px;
-  cursor: pointer;
   display: flex;
   align-items: center;
   border: 1px solid rgba(255, 255, 255, 0.9);
@@ -153,6 +152,7 @@ select {
 
 .projectBtn:hover:not(.selectedBtn) {
   translate: 5px;
+  cursor: pointer;
 }
 
 .selectedBtn {
