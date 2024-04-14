@@ -51,6 +51,10 @@ function validateProject(name, description) {
 function displayProjectList() {
   for (const project of projectController.getProjectList()) {
     createProjectButton(project);
+    if (project.getID() === projectController.getActiveProjectID()) {
+      resetSelection();
+      displayProject(project.getID());
+    }
   }
 }
 
@@ -73,7 +77,7 @@ function createProjectButton(project) {
   element.addEventListener("click", (e) => {
     const targetID = e.target.id ? e.target.id : e.target.parentNode.id;
     projectDisplay.innerHTML = "";
-    projectDisplay.append(displayProject(targetID));
+    displayProject(targetID);
     projectController.setActiveProjectID(targetID);
     projectDisplay.append(createToDoButton());
     resetSelection();
@@ -95,7 +99,7 @@ function displayProject(projectID) {
   element.appendChild(projectTitle);
   element.appendChild(projectDescription);
 
-  return element;
+  projectDisplay.append(element);
 }
 
 function resetSelection() {

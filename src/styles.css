@@ -63,10 +63,16 @@ input:focus {
   border: 1px solid grey;
 }
 
-select {
+.select-dropdown {
+  position: relative;
   cursor: pointer;
   margin-top: 3px;
   padding: 5px;
+  width: 100%;
+}
+
+select {
+  width: 100%;
 }
 
 .invalid {
