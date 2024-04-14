@@ -7,7 +7,7 @@ const newProjectBtn = document.querySelector(".newProjectBtn");
 const newProjectModal = document.querySelector(".project-modal");
 const newToDoModal = document.querySelector(".toDo-modal");
 
-newProjectBtn.addEventListener("click", (event) => {
+newProjectBtn.addEventListener("click", (e) => {
   newProjectModal.style.display = "block";
 });
 
@@ -58,24 +58,26 @@ function createProjectButton(project) {
   const element = document.createElement("div");
   const newButton = document.createElement("span");
   const icon = document.createElement("span");
-  icon.innerText = "folder";
-  icon.className = "material-symbols-outlined";
-  icon.style.color = project.color;
 
-  newButton.innerText = project.name;
-  newButton.className = "projectBtn";
-  newButton.id = project.id;
-  icon.color = project.labelolor;
+  element.className = "projectBtn";
+  element.id = project.getID();
+  newButton.innerText = project.getName();
+
+  icon.innerText = "folder";
+  icon.classList = "projectIcon material-symbols-outlined";
+  icon.style.color = project.getColor();
 
   element.appendChild(icon);
   element.appendChild(newButton);
 
-  newButton.addEventListener("click", (e) => {
+  element.addEventListener("click", (e) => {
+    const targetID = e.target.id ? e.target.id : e.target.parentNode.id;
     projectDisplay.innerHTML = "";
-    projectDisplay.append(displayProject(e.target.id));
-    projectController.setActiveProjectID(e.target.id);
-    initialiseToDoList(e.target.id);
+    projectDisplay.append(displayProject(targetID));
+    projectController.setActiveProjectID(targetID);
     projectDisplay.append(createToDoButton());
+    resetSelection();
+    initialiseToDoList(targetID);
   });
 
   projectList.appendChild(element);
@@ -94,6 +96,14 @@ function displayProject(projectID) {
   element.appendChild(projectDescription);
 
   return element;
+}
+
+function resetSelection() {
+  for (const project of projectList.children) {
+    if (project.id != projectController.getActiveProjectID())
+      project.className = "projectBtn";
+    else project.classList = "projectBtn selectedBtn";
+  }
 }
 
 const createToDoForm = document.querySelector("#createToDoForm");

@@ -137,6 +137,33 @@ select {
 .projectBtn {
   margin: 4px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: 5px;
+  overflow: hidden;
+  transition: 0.2s;
+}
+
+.projectBtn:hover:not(.selectedBtn) {
+  translate: 5px;
+}
+
+.selectedBtn {
+  background-color: rgba(255, 255, 255, 0.9);
+}
+.selectedBtn span {
+  color: rgb(25, 25, 25);
+}
+
+.projectIcon {
+  font-size: 2rem;
+  font-weight: 600;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 1px;
+  border-radius: 0 5px 5px 0;
+  margin-right: 10px;
+  text-shadow: 0 0 1px rgba(0, 0, 0, 0.3);
 }
 
 .newElementBtn {
