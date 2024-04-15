@@ -157,6 +157,7 @@ select {
 
 .selectedBtn {
   background-color: rgba(255, 255, 255, 0.9);
+  transition: 0.4s;
 }
 .selectedBtn span {
   color: rgb(25, 25, 25);

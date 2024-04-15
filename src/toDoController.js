@@ -53,10 +53,10 @@ let toDos = [];
 function createToDo(toDo) {
   let newToDo = new ToDo(
     projectController.getActiveProjectID(),
-    toDo.name,
-    toDo.description,
-    toDo.dueDate,
-    toDo.priority
+    toDo.name.value,
+    toDo.description.value,
+    toDo.dueDate.value,
+    toDo.priority.value
   );
 
   toDos.push(newToDo);

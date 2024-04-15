@@ -32,7 +32,7 @@ createProjectForm.addEventListener("submit", (e) => {
   }
 });
 createProjectForm.addEventListener("reset", (e) => {
-  newProjectModal.style.display = "none";
+  clearForm(newProjectModal, e);
 });
 
 function validateProject(name, description) {
@@ -54,6 +54,8 @@ function displayProjectList() {
     if (project.getID() === projectController.getActiveProjectID()) {
       resetSelection();
       displayProject(project.getID());
+      initialiseToDoList();
+      createToDoButton();
     }
   }
 }
@@ -79,9 +81,9 @@ function createProjectButton(project) {
     projectDisplay.innerHTML = "";
     displayProject(targetID);
     projectController.setActiveProjectID(targetID);
-    projectDisplay.append(createToDoButton());
     resetSelection();
     initialiseToDoList(targetID);
+    createToDoButton();
   });
 
   projectList.appendChild(element);
@@ -113,22 +115,43 @@ function resetSelection() {
 const createToDoForm = document.querySelector("#createToDoForm");
 createToDoForm.addEventListener("submit", (e) => {
   e.preventDefault();
-  newToDoModal.style.display = "none";
 
   const toDo = {
-    name: document.querySelector("#todo-name").value,
-    description: document.querySelector("#todo-description").value,
-    dueDate: document.querySelector("#todo-due-date").value,
-    priority: document.querySelector("#todo-priority").value,
+    name: document.querySelector("#todo-name"),
+    description: document.querySelector("#todo-description"),
+    dueDate: document.querySelector("#todo-due-date"),
+    priority: document.querySelector("#todo-priority"),
   };
-  toDoController.createToDo(toDo);
-  displayToDoList(projectController.getActiveProjectID());
+  if (validateToDo(toDo.name, toDo.description, toDo.dueDate)) {
+    newToDoModal.style.display = "none";
 
-  createToDoForm.reset();
+    toDoController.createToDo(toDo);
+    displayToDoList(projectController.getActiveProjectID());
+
+    createToDoForm.reset();
+  }
 });
 createToDoForm.addEventListener("reset", (e) => {
-  newToDoModal.style.display = "none";
+  clearForm(newToDoModal, e);
 });
+
+function validateToDo(name, description, dueDate) {
+  let isValid = true;
+  const currentDate = new Date().toLocaleDateString("fr-ca");
+  if (name.value.length < 3 || name.value.length > 20) {
+    name.className = "invalid";
+    isValid = false;
+  }
+  if (description.value.length > 40) {
+    description.className = "invalid";
+    isValid = false;
+  }
+  if (dueDate.value < currentDate) {
+    dueDate.className = "invalid";
+    isValid = false;
+  }
+  return isValid;
+}
 
 function createToDoButton() {
   const newToDoBtn = document.createElement("button");
@@ -139,7 +162,7 @@ function createToDoButton() {
     newToDoModal.style.display = "block";
   });
 
-  return newToDoBtn;
+  projectDisplay.append(newToDoBtn);
 }
 
 function initialiseToDoList(projectID) {
@@ -158,8 +181,6 @@ function displayToDoList(projectID) {
   for (const toDo of projectToDos) {
     toDoList.appendChild(createToDoElement(toDo));
   }
-
-  return toDoList;
 }
 
 function createToDoElement(toDo) {
@@ -167,6 +188,12 @@ function createToDoElement(toDo) {
   toDoElement.id = toDo.getID();
   toDoElement.innerText = `Name: ${toDo.getName()}, Date: ${toDo.getDueDate()}, Priority: ${toDo.getPriority()}`;
   return toDoElement;
+}
+
+function clearForm(modal, e) {
+  for (const input of e.target)
+    if (input.className === "invalid") input.className = "";
+  modal.style.display = "none";
 }
 
 export default { displayProjectList, createProjectButton };
