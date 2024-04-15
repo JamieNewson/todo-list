@@ -190,3 +190,36 @@ select {
 .newElementBtn:hover {
   background-color: rgb(225, 225, 225);
 }
+
+.toDoElement {
+  position: relative;
+  border: 1px solid rgb(224, 224, 224);
+  border-radius: 10px;
+  max-width: 250px;
+  height: 85px;
+  overflow: hidden;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+}
+
+.toDo-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  background-color: #318ce7;
+
+  padding: 5px 5px 0 5px;
+}
+
+.toDo-header * {
+  color: white;
+}
+
+.description {
+  padding-left: 5px;
+}
+
+.dueDate {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+}
