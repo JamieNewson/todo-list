@@ -51,17 +51,15 @@ function validateProject(name, description) {
 function displayProjectList() {
   for (const project of projectController.getProjectList()) {
     createProjectButton(project);
-    if (project.getID() === projectController.getActiveProjectID()) {
-      resetSelection();
-      displayProject(project.getID());
-      displayToDoList(project.getID());
-      createToDoButton();
-    }
   }
+  resetSelection();
+  displayProject();
+  displayToDoList();
+  createToDoButton();
 }
 
 function createProjectButton(project) {
-  const element = document.createElement("div");
+  const element = document.createElement("li");
   const newButton = document.createElement("span");
   const icon = document.createElement("span");
 
@@ -80,16 +78,16 @@ function createProjectButton(project) {
     const targetID = e.target.id ? e.target.id : e.target.parentNode.id;
     projectDisplay.innerHTML = "";
     projectController.setActiveProjectID(targetID);
-    displayProject(targetID);
+    displayProject();
     resetSelection();
-    displayToDoList(targetID);
+    displayToDoList();
     createToDoButton();
   });
 
   projectList.appendChild(element);
 }
 
-function displayProject(projectID) {
+function displayProject(projectID = projectController.getActiveProjectID()) {
   const element = document.createElement("div");
   const projectTitle = document.createElement("h2");
   const projectDescription = document.createElement("p");
@@ -127,7 +125,6 @@ createToDoForm.addEventListener("submit", (e) => {
     newToDoModal.style.display = "none";
 
     toDoController.createToDo(toDo);
-    displayToDoList(projectController.getActiveProjectID());
 
     createToDoForm.reset();
   }
@@ -179,10 +176,36 @@ function displayToDoList() {
   projectDisplay.append(toDoList);
 }
 
+function updateToDoList(toDo) {
+  const toDoList = document.querySelector(".toDoList");
+  toDoList.appendChild(createToDoElement(toDo));
+}
+
 function createToDoElement(toDo) {
   const toDoElement = document.createElement("li");
+  const toDoHeader = document.createElement("div");
+  const toDoTitle = document.createElement("h3");
+  const toDoPriority = document.createElement("span");
+  const toDoDesc = document.createElement("p");
+  const toDoDueDate = document.createElement("p");
+
   toDoElement.id = toDo.getID();
-  toDoElement.innerText = `Name: ${toDo.getName()}, Date: ${toDo.getDueDate()}, Priority: ${toDo.getPriority()}`;
+
+  toDoElement.className = "toDo-element";
+  toDoHeader.className = "toDo-header";
+  toDoTitle.className = "title";
+  toDoPriority.className = "priority";
+  toDoDesc.className = "description";
+  toDoDueDate.className = "dueDate";
+
+  toDoTitle.innerText = toDo.getName();
+  toDoPriority.innerText = "!!!";
+  toDoDesc.innerText = toDo.getDescription();
+  toDoDueDate.innerText = toDo.getDueDate();
+
+  toDoHeader.append(toDoTitle, toDoPriority);
+  toDoElement.append(toDoHeader, toDoDesc, toDoDueDate);
+
   return toDoElement;
 }
 
@@ -192,4 +215,4 @@ function clearForm(modal, e) {
   modal.style.display = "none";
 }
 
-export default { displayProjectList, createProjectButton };
+export default { displayProjectList, createProjectButton, updateToDoList };

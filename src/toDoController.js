@@ -1,4 +1,5 @@
 import projectController from "./projectController.js";
+import domController from "./domController.js";
 
 class ToDo {
   constructor(name, description, dueDate, priority) {
@@ -61,6 +62,8 @@ function createToDo(toDo) {
   );
 
   toDos.push(newToDo);
+
+  domController.updateToDoList(newToDo);
 }
 
 function getToDos() {

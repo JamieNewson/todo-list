@@ -14,6 +14,10 @@ h3 {
   font-size: 1.2rem;
 }
 
+ul {
+  list-style-type: none;
+}
+
 .modal {
   display: none;
   position: absolute;
@@ -191,14 +195,33 @@ select {
   background-color: rgb(225, 225, 225);
 }
 
-.toDoElement {
+.projectDisplay {
+  padding: 10px;
+}
+
+.projectDisplayTitle h2 {
+  text-decoration: underline;
+}
+
+.toDoList {
+  padding: 10px 5px;
+}
+
+.toDo-element {
   position: relative;
   border: 1px solid rgb(224, 224, 224);
+  margin-bottom: 10px;
   border-radius: 10px;
-  max-width: 250px;
-  height: 85px;
+  width: 325px;
+  min-height: 60px;
+  max-height: 100px;
   overflow: hidden;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+  transition: 0.2s;
+}
+
+.toDo-element:hover {
+  transform: scale(1.02);
 }
 
 .toDo-header {
@@ -206,20 +229,28 @@ select {
   align-items: baseline;
   justify-content: space-between;
   background-color: #318ce7;
-
-  padding: 5px 5px 0 5px;
+  padding: 3px 8px;
 }
 
 .toDo-header * {
   color: white;
 }
 
+.toDo-header h3 {
+  flex-grow: 1;
+}
+
 .description {
-  padding-left: 5px;
+  padding: 3px 0px 8px 5px;
+  width: 225px;
 }
 
 .dueDate {
   position: absolute;
-  bottom: 5px;
-  right: 5px;
+  padding: 4px;
+  bottom: 0;
+  right: 0;
+  border-radius: 5px 0 0 0;
+  background-color: #e7313d;
+  color: white;
 }
