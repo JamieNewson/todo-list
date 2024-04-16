@@ -54,7 +54,7 @@ function displayProjectList() {
     if (project.getID() === projectController.getActiveProjectID()) {
       resetSelection();
       displayProject(project.getID());
-      initialiseToDoList();
+      displayToDoList(project.getID());
       createToDoButton();
     }
   }
@@ -79,10 +79,10 @@ function createProjectButton(project) {
   element.addEventListener("click", (e) => {
     const targetID = e.target.id ? e.target.id : e.target.parentNode.id;
     projectDisplay.innerHTML = "";
-    displayProject(targetID);
     projectController.setActiveProjectID(targetID);
+    displayProject(targetID);
     resetSelection();
-    initialiseToDoList(targetID);
+    displayToDoList(targetID);
     createToDoButton();
   });
 
@@ -122,6 +122,7 @@ createToDoForm.addEventListener("submit", (e) => {
     dueDate: document.querySelector("#todo-due-date"),
     priority: document.querySelector("#todo-priority"),
   };
+
   if (validateToDo(toDo.name, toDo.description, toDo.dueDate)) {
     newToDoModal.style.display = "none";
 
@@ -165,22 +166,17 @@ function createToDoButton() {
   projectDisplay.append(newToDoBtn);
 }
 
-function initialiseToDoList(projectID) {
+function displayToDoList() {
   const toDoList = document.createElement("ul");
+  const projectToDos = toDoController.getToDos();
+
   toDoList.className = "toDoList";
-  projectDisplay.append(toDoList);
-  displayToDoList(projectID);
-}
-
-function displayToDoList(projectID) {
-  const toDoList = document.querySelector(".toDoList");
-  const projectToDos = toDoController.getToDos(projectID);
-
   toDoList.innerHTML = "";
 
   for (const toDo of projectToDos) {
     toDoList.appendChild(createToDoElement(toDo));
   }
+  projectDisplay.append(toDoList);
 }
 
 function createToDoElement(toDo) {

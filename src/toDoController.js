@@ -1,10 +1,9 @@
-import { create } from "lodash";
 import projectController from "./projectController.js";
 
 class ToDo {
-  constructor(parentID, name, description, dueDate, priority) {
+  constructor(name, description, dueDate, priority) {
     this.id = `todo-${Math.random().toString(16).slice(4)}`;
-    this.parentID = parentID;
+    this.parentID = projectController.getActiveProjectID();
     this.name = name;
     this.description = description;
     this.dueDate = dueDate;
@@ -17,6 +16,9 @@ class ToDo {
 
   setParentId(parentId) {
     this.parentId = parentId;
+  }
+  getParentID() {
+    return this.parentID;
   }
 
   getName() {
@@ -52,7 +54,6 @@ let toDos = [];
 
 function createToDo(toDo) {
   let newToDo = new ToDo(
-    projectController.getActiveProjectID(),
     toDo.name.value,
     toDo.description.value,
     toDo.dueDate.value,
@@ -62,15 +63,10 @@ function createToDo(toDo) {
   toDos.push(newToDo);
 }
 
-function getToDos(inputID) {
-  return toDos.filter(({ parentID }) => parentID === inputID);
+function getToDos() {
+  return toDos.filter(
+    (toDo) => toDo.getParentID() === projectController.getActiveProjectID()
+  );
 }
-
-// console.log(
-//   `ToDo: ${myToDo.getName()}
-// Description: ${myToDo.getDescription()}
-// Due Date: ${myToDo.getDueDate().toLocaleDateString("en-gb")}
-// Priority: ${myToDo.getPriority()}`
-// );
 
 export default { getToDos, createToDo };
