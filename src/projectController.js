@@ -5,7 +5,6 @@ class Project {
     this.id = `proj-${Math.random().toString(16).slice(4)}`;
     this.name = name;
     this.description = description;
-    this.toDos = [];
     this.labelColor = color;
   }
 
@@ -25,13 +24,6 @@ class Project {
   }
   getDescription() {
     return this.description;
-  }
-
-  setToDo(toDo) {
-    this.toDos.push(toDo);
-  }
-  getToDos() {
-    return getToDos(this.id);
   }
 
   getColor() {
@@ -73,7 +65,6 @@ function setActiveProjectID(projectID) {
 function createProject(name, description, color) {
   let newProject = new Project(name, description, color);
 
-  console.log(newProject);
   projects.push(newProject);
 
   domController.createProjectButton(newProject);
