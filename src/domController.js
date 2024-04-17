@@ -5,7 +5,7 @@ const projectDisplay = document.querySelector(".projectDisplay");
 const projectList = document.querySelector(".projectList");
 const newProjectBtn = document.querySelector(".newProjectBtn");
 const newProjectModal = document.querySelector(".project-modal");
-const newToDoModal = document.querySelector(".toDo-modal");
+const toDoModal = document.querySelector(".toDo-modal");
 
 newProjectBtn.addEventListener("click", (e) => {
   newProjectModal.style.display = "block";
@@ -110,28 +110,46 @@ function resetSelection() {
   }
 }
 
-const createToDoForm = document.querySelector("#createToDoForm");
-createToDoForm.addEventListener("submit", (e) => {
+const toDoForm = document.querySelector("#toDoForm");
+toDoForm.addEventListener("submit", (e) => {
   e.preventDefault();
 
-  const toDo = {
+  const toDo = getInputs();
+
+  if (validateToDo(toDo.name, toDo.description, toDo.dueDate)) {
+    toDoModal.style.display = "none";
+
+    if (e.submitter.id == "create") toDoController.createToDo(toDo);
+    else toDoController.updateToDo(toDo);
+
+    toDoForm.reset();
+  }
+});
+toDoForm.addEventListener("reset", (e) => {
+  clearForm(toDoModal, e);
+});
+
+function getInputs() {
+  return {
+    id: document.querySelector("#todo-id"),
     name: document.querySelector("#todo-name"),
     description: document.querySelector("#todo-description"),
     dueDate: document.querySelector("#todo-due-date"),
     priority: document.querySelector("#todo-priority"),
   };
+}
 
-  if (validateToDo(toDo.name, toDo.description, toDo.dueDate)) {
-    newToDoModal.style.display = "none";
+function populateForm(toDo) {
+  const input = getInputs();
 
-    toDoController.createToDo(toDo);
+  input.id.value = toDo.getID();
+  input.name.value = toDo.getName();
+  input.description.value = toDo.getDescription();
+  input.dueDate.value = toDo.getDueDate().toISOString().split("T")[0];
+  input.priority.value = toDo.getPriority();
 
-    createToDoForm.reset();
-  }
-});
-createToDoForm.addEventListener("reset", (e) => {
-  clearForm(newToDoModal, e);
-});
+  toDoModal.style.display = "block";
+}
 
 function validateToDo(name, description, dueDate) {
   let isValid = true;
@@ -157,7 +175,8 @@ function createToDoButton() {
   newToDoBtn.innerText = "+";
 
   newToDoBtn.addEventListener("click", (e) => {
-    newToDoModal.style.display = "block";
+    getInputs().dueDate.value = new Date().toISOString().split("T")[0];
+    toDoModal.style.display = "block";
   });
 
   projectDisplay.append(newToDoBtn);
@@ -199,14 +218,36 @@ function createToDoElement(toDo) {
   toDoDueDate.className = "dueDate";
 
   toDoTitle.innerText = toDo.getName();
-  toDoPriority.innerText = "!!!";
+  toDoPriority.innerText = formatPriority(toDo.getPriority());
   toDoDesc.innerText = toDo.getDescription();
-  toDoDueDate.innerText = toDo.getDueDate();
+  toDoDueDate.innerText = toDo.getDueDate().toLocaleDateString();
 
   toDoHeader.append(toDoTitle, toDoPriority);
   toDoElement.append(toDoHeader, toDoDesc, toDoDueDate);
 
+  toDoElement.addEventListener("click", () => populateForm(toDo));
+
   return toDoElement;
+}
+
+function formatPriority(priority) {
+  let priorityString = "!";
+  for (let i = 1; i < priority; i++) {
+    priorityString += "!";
+  }
+  return priorityString;
+}
+
+function updateToDoElement(toDo) {
+  const toDoElement = document.getElementById(toDo.getID());
+  toDoElement.querySelector(".title").innerText = toDo.getName();
+  toDoElement.querySelector(".description").innerText = toDo.getDescription();
+  toDoElement.querySelector(".dueDate").innerText = toDo
+    .getDueDate()
+    .toLocaleDateString();
+  toDoElement.querySelector(".priority").innerText = formatPriority(
+    toDo.getPriority()
+  );
 }
 
 function clearForm(modal, e) {
@@ -215,4 +256,9 @@ function clearForm(modal, e) {
   modal.style.display = "none";
 }
 
-export default { displayProjectList, createProjectButton, updateToDoList };
+export default {
+  displayProjectList,
+  createProjectButton,
+  updateToDoList,
+  updateToDoElement,
+};

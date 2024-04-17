@@ -58,7 +58,8 @@
     <div class="modal toDo-modal">
       <div class="modal-box">
         <h2 class="modal-title">Create ToDo</h2>
-        <form action="" method="post" id="createToDoForm">
+        <form action="" method="post" id="toDoForm">
+          <input type="hidden" id="todo-id" name="todo-id" value="" />
           <div class="form-row">
             <label for="todo-name"><h3>Name:</h3> </label>
             <input
@@ -95,7 +96,18 @@
           </div>
           <div class="form-row form-buttons">
             <input class="cancel-btn" type="reset" value="Cancel" />
-            <input class="submit-btn" type="submit" value="Create" />
+            <input
+              class="submit-btn"
+              id="create"
+              type="submit"
+              value="Create"
+            />
+            <input
+              class="update-btn"
+              id="update"
+              type="submit"
+              value="Create"
+            />
           </div>
         </form>
       </div>
@@ -109,18 +121,7 @@
         </div>
         <ul class="projectList"></ul>
       </div>
-      <div class="projectDisplay">
-        <li class="toDo-element">
-          <div class="toDo-header">
-            <h3 class="title">ToDo Name</h3>
-            <span class="priority">!!!</span>
-          </div>
-          <p class="description">
-            lahgmrifj hgnbutjdio jgnthgjgi hgnbutjdio jgnthgjgi
-          </p>
-          <p class="dueDate">20/20/2024</p>
-        </li>
-      </div>
+      <div class="projectDisplay"></div>
     </div>
   </body>
 </html>

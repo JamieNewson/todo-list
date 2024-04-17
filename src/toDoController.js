@@ -7,7 +7,7 @@ class ToDo {
     this.parentID = projectController.getActiveProjectID();
     this.name = name;
     this.description = description;
-    this.dueDate = dueDate;
+    this.dueDate = new Date(dueDate);
     this.priority = priority;
   }
 
@@ -66,10 +66,21 @@ function createToDo(toDo) {
   domController.updateToDoList(newToDo);
 }
 
+function updateToDo(toDo) {
+  const element = toDos.find(({ id }) => id === toDo.id.value);
+
+  element.name = toDo.name.value;
+  element.description = toDo.description.value;
+  element.dueDate = new Date(toDo.dueDate.value);
+  element.priority = toDo.priority.value;
+
+  domController.updateToDoElement(element);
+}
+
 function getToDos() {
   return toDos.filter(
     (toDo) => toDo.getParentID() === projectController.getActiveProjectID()
   );
 }
 
-export default { getToDos, createToDo };
+export default { getToDos, createToDo, updateToDo };

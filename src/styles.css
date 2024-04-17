@@ -24,6 +24,7 @@ ul {
   background-color: rgba(0, 0, 0, 0.15);
   width: 100vw;
   height: 100vh;
+  z-index: 100;
 }
 
 .modal-box {
