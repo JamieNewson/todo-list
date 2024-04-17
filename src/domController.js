@@ -169,6 +169,14 @@ function validateToDo(name, description, dueDate) {
   return isValid;
 }
 
+function formatPriority(priority) {
+  let priorityString = "!";
+  for (let i = 1; i < priority; i++) {
+    priorityString += "!";
+  }
+  return priorityString;
+}
+
 function createToDoButton() {
   const newToDoBtn = document.createElement("button");
   newToDoBtn.classList = "newElementBtn newToDoBtn";
@@ -228,14 +236,6 @@ function createToDoElement(toDo) {
   toDoElement.addEventListener("click", () => populateForm(toDo));
 
   return toDoElement;
-}
-
-function formatPriority(priority) {
-  let priorityString = "!";
-  for (let i = 1; i < priority; i++) {
-    priorityString += "!";
-  }
-  return priorityString;
 }
 
 function updateToDoElement(toDo) {
