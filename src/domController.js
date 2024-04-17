@@ -136,6 +136,8 @@ function getInputs() {
     description: document.querySelector("#todo-description"),
     dueDate: document.querySelector("#todo-due-date"),
     priority: document.querySelector("#todo-priority"),
+    createBtn: document.querySelector("#create"),
+    updateBtn: document.querySelector("#update"),
   };
 }
 
@@ -147,8 +149,13 @@ function populateForm(toDo) {
   input.description.value = toDo.getDescription();
   input.dueDate.value = toDo.getDueDate().toISOString().split("T")[0];
   input.priority.value = toDo.getPriority();
+}
 
-  toDoModal.style.display = "block";
+function displayButtons(method) {
+  document.querySelector("#create").style.display =
+    method === "create" ? "block" : "none";
+  document.querySelector("#update").style.display =
+    method === "update" ? "block" : "none";
 }
 
 function validateToDo(name, description, dueDate) {
@@ -183,6 +190,7 @@ function createToDoButton() {
   newToDoBtn.innerText = "+";
 
   newToDoBtn.addEventListener("click", (e) => {
+    displayButtons("create");
     getInputs().dueDate.value = new Date().toISOString().split("T")[0];
     toDoModal.style.display = "block";
   });
@@ -233,7 +241,11 @@ function createToDoElement(toDo) {
   toDoHeader.append(toDoTitle, toDoPriority);
   toDoElement.append(toDoHeader, toDoDesc, toDoDueDate);
 
-  toDoElement.addEventListener("click", () => populateForm(toDo));
+  toDoElement.addEventListener("click", () => {
+    displayButtons("update");
+    populateForm(toDo);
+    toDoModal.style.display = "block";
+  });
 
   return toDoElement;
 }
