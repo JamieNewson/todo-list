@@ -1,5 +1,6 @@
 import projectController from "./projectController.js";
 import toDoController from "./toDoController.js";
+import { validateProject } from "./inputValidation";
 
 const projectDisplay = document.querySelector(".projectDisplay");
 const projectList = document.querySelector(".projectList");
@@ -15,38 +16,22 @@ const createProjectForm = document.querySelector("#createProjectForm");
 createProjectForm.addEventListener("submit", (e) => {
   e.preventDefault();
 
-  const projectName = document.querySelector("#project-name");
-  const projectDescription = document.querySelector("#project-description");
-  const projectColor = document.querySelector("#project-color");
+  const newProject = {
+    nameInput: document.querySelector("#project-name"),
+    descriptionInput: document.querySelector("#project-description"),
+    colorInput: document.querySelector("#project-color"),
+  };
 
-  if (validateProject(projectName, projectDescription)) {
-    newProjectModal.style.display = "none";
+  if (!validateProject(newProject)) return;
 
-    projectController.createProject(
-      projectName.value,
-      projectDescription.value,
-      projectColor.value
-    );
-
-    createProjectForm.reset();
-  }
+  projectController.createProject(newProject);
+  createProjectForm.reset();
 });
+
 createProjectForm.addEventListener("reset", (e) => {
+  newProjectModal.style.display = "none";
   clearForm(newProjectModal, e);
 });
-
-function validateProject(name, description) {
-  let isValid = true;
-  if (name.value.length < 3 || name.value.length > 20) {
-    name.className = "invalid";
-    isValid = false;
-  }
-  if (description.value.length > 40) {
-    description.className = "invalid";
-    isValid = false;
-  }
-  return isValid;
-}
 
 function displayProjectList() {
   for (const project of projectController.getProjectList()) {
@@ -156,24 +141,6 @@ function displayButtons(method) {
     method === "create" ? "block" : "none";
   document.querySelector("#update").style.display =
     method === "update" ? "block" : "none";
-}
-
-function validateToDo(name, description, dueDate) {
-  let isValid = true;
-  const currentDate = new Date().toLocaleDateString("fr-ca");
-  if (name.value.length < 3 || name.value.length > 20) {
-    name.className = "invalid";
-    isValid = false;
-  }
-  if (description.value.length > 40) {
-    description.className = "invalid";
-    isValid = false;
-  }
-  if (dueDate.value < currentDate) {
-    dueDate.className = "invalid";
-    isValid = false;
-  }
-  return isValid;
 }
 
 function formatPriority(priority) {

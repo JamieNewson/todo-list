@@ -62,8 +62,12 @@ function setActiveProjectID(projectID) {
   activeProjectID = projectID;
 }
 
-function createProject(name, description, color) {
-  let newProject = new Project(name, description, color);
+function createProject(projectInput) {
+  let newProject = new Project(
+    projectInput.nameInput.value,
+    projectInput.descriptionInput.value,
+    projectInput.colorInput.value
+  );
 
   projects.push(newProject);
 
