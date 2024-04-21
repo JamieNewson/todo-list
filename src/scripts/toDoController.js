@@ -54,6 +54,7 @@ class ToDo {
 let toDos = [];
 
 function createToDo(toDo) {
+  console.log(projectController.getActiveProject());
   let newToDo = new ToDo(
     toDo.nameInput.value,
     toDo.descriptionInput.value,

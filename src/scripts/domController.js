@@ -1,37 +1,10 @@
 import projectController from "./projectController.js";
 import toDoController from "./toDoController.js";
 import buildElement from "./createElement.js";
-import { validateProject, validateToDo } from "./inputValidation";
 
 const projectDisplay = document.querySelector(".projectDisplay");
 const projectList = document.querySelector(".projectList");
-const newProjectBtn = document.querySelector(".newProjectBtn");
-const newProjectModal = document.querySelector(".project-modal");
 const toDoModal = document.querySelector(".toDo-modal");
-
-newProjectBtn.addEventListener("click", (e) => {
-  newProjectModal.style.display = "block";
-});
-
-const createProjectForm = document.querySelector("#createProjectForm");
-createProjectForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-
-  const newProject = {
-    nameInput: document.querySelector("#project-name"),
-    descriptionInput: document.querySelector("#project-description"),
-    colorInput: document.querySelector("#project-color"),
-  };
-
-  if (!validateProject(newProject)) return;
-
-  projectController.createProject(newProject);
-  createProjectForm.reset();
-});
-
-createProjectForm.addEventListener("reset", (e) => {
-  clearForm(newProjectModal, e);
-});
 
 function displayProjectList() {
   for (const project of projectController.getProjectList()) {
@@ -99,23 +72,6 @@ function resetSelection() {
     else project.classList = "projectBtn selectedBtn";
   }
 }
-
-const toDoForm = document.querySelector("#toDoForm");
-toDoForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-
-  const newToDo = getInputs();
-
-  if (!validateToDo(newToDo)) return;
-
-  if (e.submitter.id == "create") toDoController.createToDo(newToDo);
-  else toDoController.updateToDo(newToDo);
-
-  toDoForm.reset();
-});
-toDoForm.addEventListener("reset", (e) => {
-  clearForm(toDoModal, e);
-});
 
 function getInputs() {
   return {
@@ -232,15 +188,9 @@ function updateToDoElement(toDo) {
   );
 }
 
-function clearForm(modal, e) {
-  for (const input of e.target)
-    if (input.className === "invalid") input.className = "";
-  modal.style.display = "none";
-}
-
 export default {
   displayProjectList,
-  createProjectButton: createProjectNavButton,
+  createProjectNavButton,
   updateToDoList,
   updateToDoElement,
 };

@@ -1,4 +1,5 @@
 import domController from "./domController.js";
+console.log("project controller called");
 
 class Project {
   constructor(name, description, color) {
@@ -12,18 +13,18 @@ class Project {
     return this.id;
   }
 
-  setName(name) {
-    this.name = name;
-  }
   getName() {
     return this.name;
   }
-
-  setDescription(description) {
-    this.description = description;
+  setName(name) {
+    this.name = name;
   }
+
   getDescription() {
     return this.description;
+  }
+  setDescription(description) {
+    this.description = description;
   }
 
   getColor() {
@@ -33,15 +34,22 @@ class Project {
 
 let projects = [];
 
-const proj1 = new Project("My Project", "My first ever project", "#2a2e45");
-const proj2 = new Project("My 2nd Project", "My second project", "#FE938C");
-const proj3 = new Project("Project No 3", "My third project", "#62a87c");
-
-projects.push(proj1);
-projects.push(proj2);
-projects.push(proj3);
+let newProject = new Project("proj", "desc", "#fff");
+projects.push(newProject);
 
 let activeProject = projects[0];
+
+function createProject(projectInput) {
+  let newProject = new Project(
+    projectInput.nameInput.value,
+    projectInput.descriptionInput.value,
+    projectInput.colorInput.value
+  );
+
+  projects.push(newProject);
+
+  domController.createProjectNavButton(newProject);
+}
 
 function getProject(projectID) {
   return projects.find(({ id }) => id === projectID);
@@ -57,18 +65,6 @@ function getActiveProject() {
 
 function setActiveProject(projectID) {
   activeProject = getProject(projectID);
-}
-
-function createProject(projectInput) {
-  let newProject = new Project(
-    projectInput.nameInput.value,
-    projectInput.descriptionInput.value,
-    projectInput.colorInput.value
-  );
-
-  projects.push(newProject);
-
-  domController.createProjectButton(newProject);
 }
 
 export default {
