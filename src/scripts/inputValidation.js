@@ -28,10 +28,10 @@ function validateDescription(input) {
   return input.value.length < 40;
 }
 
-function validateDueDate(dueDate) {
+function validateDueDate(input) {
   const currentDate = new Date().toLocaleDateString("fr-ca");
   input.className = input.value >= currentDate ? "" : "invalid";
-  return dueDate.value >= currentDate;
+  return input.value >= currentDate;
 }
 
 export { validateProject, validateToDo };

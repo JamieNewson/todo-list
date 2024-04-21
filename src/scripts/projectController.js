@@ -41,25 +41,22 @@ projects.push(proj1);
 projects.push(proj2);
 projects.push(proj3);
 
-let activeProjectID = projects[0].getID();
+let activeProject = projects[0];
 
 function getProject(projectID) {
-  const currentProject = projects.find(({ id }) => id === projectID);
-  const name = currentProject.getName();
-  const description = currentProject.getDescription();
-  return { name, description };
+  return projects.find(({ id }) => id === projectID);
 }
 
 function getProjectList() {
   return projects;
 }
 
-function getActiveProjectID() {
-  return activeProjectID;
+function getActiveProject() {
+  return activeProject;
 }
 
-function setActiveProjectID(projectID) {
-  activeProjectID = projectID;
+function setActiveProject(projectID) {
+  activeProject = getProject(projectID);
 }
 
 function createProject(projectInput) {
@@ -76,8 +73,8 @@ function createProject(projectInput) {
 
 export default {
   getProject,
-  getActiveProjectID,
-  setActiveProjectID,
+  getActiveProject,
+  setActiveProject,
   getProjectList,
   createProject,
 };

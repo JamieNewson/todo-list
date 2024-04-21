@@ -4,7 +4,7 @@ import domController from "./domController.js";
 class ToDo {
   constructor(name, description, dueDate, priority) {
     this.id = `todo-${Math.random().toString(16).slice(4)}`;
-    this.parentID = projectController.getActiveProjectID();
+    this.parentID = projectController.getActiveProject().getID();
     this.name = name;
     this.description = description;
     this.dueDate = new Date(dueDate);
@@ -15,11 +15,11 @@ class ToDo {
     return this.id;
   }
 
-  setParentId(parentId) {
-    this.parentId = parentId;
-  }
   getParentID() {
     return this.parentID;
+  }
+  setParentId(parentId) {
+    this.parentId = parentId;
   }
 
   getName() {
@@ -33,7 +33,7 @@ class ToDo {
     return this.description;
   }
   setDescription(description) {
-    this.description = this.description;
+    this.description = description;
   }
 
   getDueDate() {
@@ -47,7 +47,7 @@ class ToDo {
     return this.priority;
   }
   setPriority(priority) {
-    this.priority = this.priority;
+    this.priority = priority;
   }
 }
 
@@ -55,10 +55,10 @@ let toDos = [];
 
 function createToDo(toDo) {
   let newToDo = new ToDo(
-    toDo.name.value,
-    toDo.description.value,
-    toDo.dueDate.value,
-    toDo.priority.value
+    toDo.nameInput.value,
+    toDo.descriptionInput.value,
+    toDo.dueDateInput.value,
+    toDo.priorityInput.value
   );
 
   toDos.push(newToDo);
@@ -69,17 +69,18 @@ function createToDo(toDo) {
 function updateToDo(toDo) {
   const element = toDos.find(({ id }) => id === toDo.id.value);
 
-  element.name = toDo.name.value;
-  element.description = toDo.description.value;
-  element.dueDate = new Date(toDo.dueDate.value);
-  element.priority = toDo.priority.value;
+  element.setName(toDo.nameInput.value);
+  element.setDescription(toDo.descriptionInput.value);
+  element.setDueDate(new Date(toDo.dueDateInput.value));
+  element.setPriority(toDo.priorityInput.value);
 
   domController.updateToDoElement(element);
 }
 
 function getToDos() {
   return toDos.filter(
-    (toDo) => toDo.getParentID() === projectController.getActiveProjectID()
+    (toDo) =>
+      toDo.getParentID() === projectController.getActiveProject().getID()
   );
 }
 

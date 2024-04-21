@@ -62,8 +62,6 @@
               type="text"
               id="todo-name"
               name="todo_name"
-              minlength="3"
-              maxlength="20"
               placeholder="Name"
             />
           </div>
@@ -73,8 +71,6 @@
               type="text"
               id="todo-description"
               name="todo_description"
-              minlength="0"
-              maxlength="40"
               placeholder="Description"
             />
           </div>
@@ -91,19 +87,9 @@
             </select>
           </div>
           <div class="form-row form-buttons">
-            <input class="cancel-btn" type="reset" value="Cancel" />
-            <input
-              class="submit-btn"
-              id="create"
-              type="submit"
-              value="Create"
-            />
-            <input
-              class="submit-btn"
-              id="update"
-              type="submit"
-              value="Update"
-            />
+            <button class="cancel-btn" type="reset">Cancel</button>
+            <button class="submit-btn" id="create" type="submit">Create</button>
+            <button class="submit-btn" id="update" type="submit">Update</button>
           </div>
         </form>
       </div>

@@ -1,6 +1,7 @@
 import projectController from "./projectController.js";
 import toDoController from "./toDoController.js";
-import { validateProject } from "./inputValidation";
+import buildElement from "./createElement.js";
+import { validateProject, validateToDo } from "./inputValidation";
 
 const projectDisplay = document.querySelector(".projectDisplay");
 const projectList = document.querySelector(".projectList");
@@ -29,13 +30,12 @@ createProjectForm.addEventListener("submit", (e) => {
 });
 
 createProjectForm.addEventListener("reset", (e) => {
-  newProjectModal.style.display = "none";
   clearForm(newProjectModal, e);
 });
 
 function displayProjectList() {
   for (const project of projectController.getProjectList()) {
-    createProjectButton(project);
+    createProjectNavButton(project);
   }
   resetSelection();
   displayProject();
@@ -43,17 +43,23 @@ function displayProjectList() {
   createToDoButton();
 }
 
-function createProjectButton(project) {
-  const element = document.createElement("li");
-  const newButton = document.createElement("span");
-  const icon = document.createElement("span");
+function createProjectNavButton(project) {
+  const element = buildElement.createElementWithClassAndID(
+    "li",
+    "",
+    "projectBtn",
+    project.getID()
+  );
+  const newButton = buildElement.createElementWithText(
+    "span",
+    project.getName()
+  );
+  const icon = buildElement.createElementWithClass(
+    "span",
+    "folder",
+    "projectIcon material-symbols-outlined"
+  );
 
-  element.className = "projectBtn";
-  element.id = project.getID();
-  newButton.innerText = project.getName();
-
-  icon.innerText = "folder";
-  icon.classList = "projectIcon material-symbols-outlined";
   icon.style.color = project.getColor();
 
   element.appendChild(icon);
@@ -62,7 +68,7 @@ function createProjectButton(project) {
   element.addEventListener("click", (e) => {
     const targetID = e.target.id ? e.target.id : e.target.parentNode.id;
     projectDisplay.innerHTML = "";
-    projectController.setActiveProjectID(targetID);
+    projectController.setActiveProject(targetID);
     displayProject();
     resetSelection();
     displayToDoList();
@@ -72,24 +78,23 @@ function createProjectButton(project) {
   projectList.appendChild(element);
 }
 
-function displayProject(projectID = projectController.getActiveProjectID()) {
+function displayProject() {
+  const currentProject = projectController.getActiveProject();
   const element = document.createElement("div");
-  const projectTitle = document.createElement("h2");
-  const projectDescription = document.createElement("p");
-  const selectedProject = projectController.getProject(projectID);
 
-  projectTitle.innerText = selectedProject.name;
-  projectDescription.innerText = selectedProject.description;
-
-  element.appendChild(projectTitle);
-  element.appendChild(projectDescription);
+  element.appendChild(
+    buildElement.createElementWithText("h2", currentProject.getName())
+  );
+  element.appendChild(
+    buildElement.createElementWithText("p", currentProject.getDescription())
+  );
 
   projectDisplay.append(element);
 }
 
 function resetSelection() {
   for (const project of projectList.children) {
-    if (project.id != projectController.getActiveProjectID())
+    if (project.id != projectController.getActiveProject().getID())
       project.className = "projectBtn";
     else project.classList = "projectBtn selectedBtn";
   }
@@ -99,16 +104,14 @@ const toDoForm = document.querySelector("#toDoForm");
 toDoForm.addEventListener("submit", (e) => {
   e.preventDefault();
 
-  const toDo = getInputs();
+  const newToDo = getInputs();
 
-  if (validateToDo(toDo.name, toDo.description, toDo.dueDate)) {
-    toDoModal.style.display = "none";
+  if (!validateToDo(newToDo)) return;
 
-    if (e.submitter.id == "create") toDoController.createToDo(toDo);
-    else toDoController.updateToDo(toDo);
+  if (e.submitter.id == "create") toDoController.createToDo(newToDo);
+  else toDoController.updateToDo(newToDo);
 
-    toDoForm.reset();
-  }
+  toDoForm.reset();
 });
 toDoForm.addEventListener("reset", (e) => {
   clearForm(toDoModal, e);
@@ -117,10 +120,10 @@ toDoForm.addEventListener("reset", (e) => {
 function getInputs() {
   return {
     id: document.querySelector("#todo-id"),
-    name: document.querySelector("#todo-name"),
-    description: document.querySelector("#todo-description"),
-    dueDate: document.querySelector("#todo-due-date"),
-    priority: document.querySelector("#todo-priority"),
+    nameInput: document.querySelector("#todo-name"),
+    descriptionInput: document.querySelector("#todo-description"),
+    dueDateInput: document.querySelector("#todo-due-date"),
+    priorityInput: document.querySelector("#todo-priority"),
     createBtn: document.querySelector("#create"),
     updateBtn: document.querySelector("#update"),
   };
@@ -130,10 +133,10 @@ function populateForm(toDo) {
   const input = getInputs();
 
   input.id.value = toDo.getID();
-  input.name.value = toDo.getName();
-  input.description.value = toDo.getDescription();
-  input.dueDate.value = toDo.getDueDate().toISOString().split("T")[0];
-  input.priority.value = toDo.getPriority();
+  input.nameInput.value = toDo.getName();
+  input.descriptionInput.value = toDo.getDescription();
+  input.dueDateInput.value = toDo.getDueDate().toISOString().split("T")[0];
+  input.priorityInput.value = toDo.getPriority();
 }
 
 function displayButtons(method) {
@@ -158,7 +161,7 @@ function createToDoButton() {
 
   newToDoBtn.addEventListener("click", (e) => {
     displayButtons("create");
-    getInputs().dueDate.value = new Date().toISOString().split("T")[0];
+    getInputs().dueDateInput.value = new Date().toISOString().split("T")[0];
     toDoModal.style.display = "block";
   });
 
@@ -237,7 +240,7 @@ function clearForm(modal, e) {
 
 export default {
   displayProjectList,
-  createProjectButton,
+  createProjectButton: createProjectNavButton,
   updateToDoList,
   updateToDoElement,
 };
