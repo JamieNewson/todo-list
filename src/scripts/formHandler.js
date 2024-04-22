@@ -46,7 +46,8 @@ toDoForm.addEventListener("submit", (e) => {
 
   if (!validateToDo(newToDo)) return;
 
-  if (e.submitter.id == "create") domController.updateToDoList(newToDo);
+  if (e.submitter.id == "create")
+    domController.updateToDoList(toDoController.createToDo(newToDo));
   else toDoController.updateToDoElement(newToDo);
 
   toDoForm.reset();

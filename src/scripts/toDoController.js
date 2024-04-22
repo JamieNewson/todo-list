@@ -10,6 +10,7 @@ class ToDo {
     this.description = description;
     this.dueDate = new Date(dueDate);
     this.priority = priority;
+    this.isComplete = false;
   }
 
   getID() {
@@ -47,16 +48,22 @@ class ToDo {
   getPriority() {
     return this.priority;
   }
-  setPriority(priority) {
-    this.priority = priority;
-  }
-
   getFormattedPriority() {
     let priorityString = "!";
     for (let i = 1; i < this.priority; i++) {
       priorityString += "!";
     }
     return priorityString;
+  }
+  setPriority(priority) {
+    this.priority = priority;
+  }
+
+  getState() {
+    return this.isComplete;
+  }
+  setState() {
+    this.isComplete = !this.isComplete;
   }
 }
 
@@ -87,13 +94,11 @@ function updateToDo(toDo) {
 }
 
 function createToDoElement(toDo) {
-  const newToDo = createToDo(toDo);
-
   const toDoElement = buildElement.createElementWithClassAndID(
     "li",
     "",
     "toDo-element",
-    newToDo.getID()
+    toDo.getID()
   );
   const toDoHeader = buildElement.createElementWithClass(
     "div",
@@ -102,22 +107,22 @@ function createToDoElement(toDo) {
   );
   const toDoTitle = buildElement.createElementWithClass(
     "h3",
-    newToDo.getName(),
+    toDo.getName(),
     "title"
   );
   const toDoPriority = buildElement.createElementWithClass(
     "span",
-    newToDo.getFormattedPriority(),
+    toDo.getFormattedPriority(),
     "priority"
   );
   const toDoDesc = buildElement.createElementWithClass(
     "p",
-    newToDo.getDescription(),
+    toDo.getDescription(),
     "description"
   );
   const toDoDueDate = buildElement.createElementWithClass(
     "p",
-    newToDo.getDueDate().toLocaleDateString(),
+    toDo.getDueDate().toLocaleDateString(),
     "dueDate"
   );
 
@@ -125,7 +130,7 @@ function createToDoElement(toDo) {
   toDoElement.append(toDoHeader, toDoDesc, toDoDueDate);
 
   toDoElement.addEventListener("click", () => {
-    formHandler.displayToDoForm("update", newToDo);
+    formHandler.displayToDoForm("update", toDo);
   });
 
   return toDoElement;
@@ -154,6 +159,8 @@ function getToDos() {
 
 export default {
   getToDos,
+  createToDo,
+  updateToDo,
   createToDoElement,
   updateToDoElement,
 };
