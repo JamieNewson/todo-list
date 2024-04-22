@@ -1,5 +1,7 @@
 import projectController from "./projectController.js";
 import domController from "./domController.js";
+import buildElement from "./createElement.js";
+import formHandler from "./formHandler.js";
 
 class ToDo {
   constructor(name, description, dueDate, priority) {
@@ -49,6 +51,14 @@ class ToDo {
   setPriority(priority) {
     this.priority = priority;
   }
+
+  getFormattedPriority() {
+    let priorityString = "!";
+    for (let i = 1; i < this.priority; i++) {
+      priorityString += "!";
+    }
+    return priorityString;
+  }
 }
 
 let toDos = [];
@@ -63,7 +73,7 @@ function createToDo(toDo) {
 
   toDos.push(newToDo);
 
-  domController.updateToDoList(newToDo);
+  return newToDo;
 }
 
 function updateToDo(toDo) {
@@ -74,7 +84,50 @@ function updateToDo(toDo) {
   element.setDueDate(new Date(toDo.dueDateInput.value));
   element.setPriority(toDo.priorityInput.value);
 
-  domController.updateToDoElement(element);
+  return element;
+}
+
+function createToDoElement(toDo) {
+  const toDoElement = buildElement.createElementWithClassAndID(
+    "li",
+    "",
+    "toDo-element",
+    toDo.getID()
+  );
+  const toDoHeader = buildElement.createElementWithClass(
+    "div",
+    "",
+    "toDo-header"
+  );
+  const toDoTitle = buildElement.createElementWithClass(
+    "h3",
+    toDo.getName(),
+    "title"
+  );
+  const toDoPriority = buildElement.createElementWithClass(
+    "span",
+    toDo.getFormattedPriority(),
+    "priority"
+  );
+  const toDoDesc = buildElement.createElementWithClass(
+    "p",
+    toDo.getDescription(),
+    "description"
+  );
+  const toDoDueDate = buildElement.createElementWithClass(
+    "p",
+    toDo.getDueDate().toLocaleDateString(),
+    "dueDate"
+  );
+
+  toDoHeader.append(toDoTitle, toDoPriority);
+  toDoElement.append(toDoHeader, toDoDesc, toDoDueDate);
+
+  toDoElement.addEventListener("click", () => {
+    formHandler.displayToDoForm("update", toDo);
+  });
+
+  return toDoElement;
 }
 
 function getToDos() {
@@ -84,4 +137,24 @@ function getToDos() {
   );
 }
 
-export default { getToDos, createToDo, updateToDo };
+function createToDoButton() {
+  const newToDoBtn = buildElement.createElementWithClass(
+    "button",
+    "+",
+    "newElementBtn newToDoBtn"
+  );
+
+  newToDoBtn.addEventListener("click", (e) => {
+    formHandler.displayToDoForm("create");
+  });
+
+  return newToDoBtn;
+}
+
+export default {
+  getToDos,
+  createToDo,
+  updateToDo,
+  createToDoElement,
+  createToDoButton,
+};

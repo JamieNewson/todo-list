@@ -1,5 +1,6 @@
 import projectController from "./projectController.js";
 import toDoController from "./toDoController.js";
+import domController from "./domController.js";
 import { validateProject, validateToDo } from "./inputValidation";
 
 const newProjectBtn = document.querySelector(".newProjectBtn");
@@ -10,8 +11,8 @@ newProjectBtn.addEventListener("click", (e) => {
   newProjectModal.style.display = "block";
 });
 
-const createProjectForm = document.querySelector("#createProjectForm");
-createProjectForm.addEventListener("submit", (e) => {
+const projectForm = document.querySelector("#createProjectForm");
+projectForm.addEventListener("submit", (e) => {
   e.preventDefault();
 
   const newProject = {
@@ -22,12 +23,14 @@ createProjectForm.addEventListener("submit", (e) => {
 
   if (!validateProject(newProject)) return;
 
-  projectController.createProject(newProject);
-  createProjectForm.reset();
+  domController.updateProjectList(projectController.createProject(newProject));
+  projectForm.reset();
 });
 
-createProjectForm.addEventListener("reset", (e) => {
-  clearForm(newProjectModal, e);
+projectForm.addEventListener("reset", (e) => {
+  for (const input of e.target)
+    if (input.className === "invalid") input.className = "";
+  newProjectModal.style.display = "none";
 });
 
 const toDoForm = document.querySelector("#toDoForm");
@@ -38,14 +41,17 @@ toDoForm.addEventListener("submit", (e) => {
 
   if (!validateToDo(newToDo)) return;
 
-  if (e.submitter.id == "create") toDoController.createToDo(newToDo);
-  else toDoController.updateToDo(newToDo);
+  if (e.submitter.id == "create")
+    domController.updateToDoList(toDoController.createToDo(newToDo));
+  else domController.updateToDoElement(toDoController.updateToDo(newToDo));
 
   toDoForm.reset();
 });
 
 toDoForm.addEventListener("reset", (e) => {
-  clearForm(toDoModal, e);
+  for (const input of e.target)
+    if (input.className === "invalid") input.className = "";
+  toDoModal.style.display = "none";
 });
 
 function displayToDoForm(method, toDo) {
@@ -82,12 +88,6 @@ function populateForm(toDo) {
   input.descriptionInput.value = toDo.getDescription();
   input.dueDateInput.value = toDo.getDueDate().toISOString().split("T")[0];
   input.priorityInput.value = toDo.getPriority();
-}
-
-function clearForm(modal, e) {
-  for (const input of e.target)
-    if (input.className === "invalid") input.className = "";
-  modal.style.display = "none";
 }
 
 export default { displayToDoForm };

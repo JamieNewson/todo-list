@@ -1,5 +1,5 @@
 import domController from "./domController.js";
-console.log("project controller called");
+import buildElement from "./createElement.js";
 
 class Project {
   constructor(name, description, color) {
@@ -48,7 +48,36 @@ function createProject(projectInput) {
 
   projects.push(newProject);
 
-  domController.createProjectNavButton(newProject);
+  return newProject;
+}
+
+function createProjectNavButton(project) {
+  const element = buildElement.createElementWithClassAndID(
+    "li",
+    "",
+    "projectBtn",
+    project.getID()
+  );
+  const newButton = buildElement.createElementWithText(
+    "span",
+    project.getName()
+  );
+  const icon = buildElement.createElementWithClass(
+    "span",
+    "folder",
+    "projectIcon material-symbols-outlined"
+  );
+
+  icon.style.color = project.getColor();
+
+  element.appendChild(icon);
+  element.appendChild(newButton);
+
+  element.addEventListener("click", (event) => {
+    domController.handleNav(event);
+  });
+
+  return element;
 }
 
 function getProject(projectID) {
@@ -68,9 +97,9 @@ function setActiveProject(projectID) {
 }
 
 export default {
-  getProject,
   getActiveProject,
   setActiveProject,
   getProjectList,
   createProject,
+  createProjectNavButton,
 };
