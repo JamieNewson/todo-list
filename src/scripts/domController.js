@@ -1,10 +1,10 @@
 import projectController from "./projectController.js";
 import toDoController from "./toDoController.js";
 import buildElement from "./createElement.js";
+import formHandler from "./formHandler.js";
 
 const projectDisplay = document.querySelector(".projectDisplay");
 const projectList = document.querySelector(".projectList");
-const toDoModal = document.querySelector(".toDo-modal");
 
 function displayProjectList() {
   for (const project of projectController.getProjectList()) {
@@ -73,35 +73,6 @@ function resetSelection() {
   }
 }
 
-function getInputs() {
-  return {
-    id: document.querySelector("#todo-id"),
-    nameInput: document.querySelector("#todo-name"),
-    descriptionInput: document.querySelector("#todo-description"),
-    dueDateInput: document.querySelector("#todo-due-date"),
-    priorityInput: document.querySelector("#todo-priority"),
-    createBtn: document.querySelector("#create"),
-    updateBtn: document.querySelector("#update"),
-  };
-}
-
-function populateForm(toDo) {
-  const input = getInputs();
-
-  input.id.value = toDo.getID();
-  input.nameInput.value = toDo.getName();
-  input.descriptionInput.value = toDo.getDescription();
-  input.dueDateInput.value = toDo.getDueDate().toISOString().split("T")[0];
-  input.priorityInput.value = toDo.getPriority();
-}
-
-function displayButtons(method) {
-  document.querySelector("#create").style.display =
-    method === "create" ? "block" : "none";
-  document.querySelector("#update").style.display =
-    method === "update" ? "block" : "none";
-}
-
 function formatPriority(priority) {
   let priorityString = "!";
   for (let i = 1; i < priority; i++) {
@@ -111,29 +82,27 @@ function formatPriority(priority) {
 }
 
 function createToDoButton() {
-  const newToDoBtn = document.createElement("button");
-  newToDoBtn.classList = "newElementBtn newToDoBtn";
-  newToDoBtn.innerText = "+";
+  const newToDoBtn = buildElement.createElementWithClass(
+    "button",
+    "+",
+    "newElementBtn newToDoBtn"
+  );
 
   newToDoBtn.addEventListener("click", (e) => {
-    displayButtons("create");
-    getInputs().dueDateInput.value = new Date().toISOString().split("T")[0];
-    toDoModal.style.display = "block";
+    formHandler.displayToDoForm("create");
   });
 
   projectDisplay.append(newToDoBtn);
 }
 
 function displayToDoList() {
-  const toDoList = document.createElement("ul");
+  const toDoList = buildElement.createElementWithClass("ul", "", "toDoList");
   const projectToDos = toDoController.getToDos();
-
-  toDoList.className = "toDoList";
-  toDoList.innerHTML = "";
 
   for (const toDo of projectToDos) {
     toDoList.appendChild(createToDoElement(toDo));
   }
+
   projectDisplay.append(toDoList);
 }
 
@@ -143,34 +112,43 @@ function updateToDoList(toDo) {
 }
 
 function createToDoElement(toDo) {
-  const toDoElement = document.createElement("li");
-  const toDoHeader = document.createElement("div");
-  const toDoTitle = document.createElement("h3");
-  const toDoPriority = document.createElement("span");
-  const toDoDesc = document.createElement("p");
-  const toDoDueDate = document.createElement("p");
-
-  toDoElement.id = toDo.getID();
-
-  toDoElement.className = "toDo-element";
-  toDoHeader.className = "toDo-header";
-  toDoTitle.className = "title";
-  toDoPriority.className = "priority";
-  toDoDesc.className = "description";
-  toDoDueDate.className = "dueDate";
-
-  toDoTitle.innerText = toDo.getName();
-  toDoPriority.innerText = formatPriority(toDo.getPriority());
-  toDoDesc.innerText = toDo.getDescription();
-  toDoDueDate.innerText = toDo.getDueDate().toLocaleDateString();
+  const toDoElement = buildElement.createElementWithClassAndID(
+    "li",
+    "",
+    "toDo-element",
+    toDo.getID()
+  );
+  const toDoHeader = buildElement.createElementWithClass(
+    "div",
+    "",
+    "toDo-header"
+  );
+  const toDoTitle = buildElement.createElementWithClass(
+    "h3",
+    toDo.getName(),
+    "title"
+  );
+  const toDoPriority = buildElement.createElementWithClass(
+    "span",
+    formatPriority(toDo.getPriority()),
+    "priority"
+  );
+  const toDoDesc = buildElement.createElementWithClass(
+    "p",
+    toDo.getDescription(),
+    "description"
+  );
+  const toDoDueDate = buildElement.createElementWithClass(
+    "p",
+    toDo.getDueDate().toLocaleDateString(),
+    "dueDate"
+  );
 
   toDoHeader.append(toDoTitle, toDoPriority);
   toDoElement.append(toDoHeader, toDoDesc, toDoDueDate);
 
   toDoElement.addEventListener("click", () => {
-    displayButtons("update");
-    populateForm(toDo);
-    toDoModal.style.display = "block";
+    formHandler.displayToDoForm("update", toDo);
   });
 
   return toDoElement;

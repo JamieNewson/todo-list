@@ -37,7 +37,6 @@ toDoForm.addEventListener("submit", (e) => {
   const newToDo = getInputs();
 
   if (!validateToDo(newToDo)) return;
-  console.log(e.submitter.id);
 
   if (e.submitter.id == "create") toDoController.createToDo(newToDo);
   else toDoController.updateToDo(newToDo);
@@ -48,6 +47,13 @@ toDoForm.addEventListener("submit", (e) => {
 toDoForm.addEventListener("reset", (e) => {
   clearForm(toDoModal, e);
 });
+
+function displayToDoForm(method, toDo) {
+  displayButtons(method);
+  if (method == "update") populateForm(toDo);
+  else getInputs().dueDateInput.value = new Date().toISOString().split("T")[0];
+  toDoModal.style.display = "block";
+}
 
 function displayButtons(method) {
   document.querySelector("#create").style.display =
@@ -83,3 +89,5 @@ function clearForm(modal, e) {
     if (input.className === "invalid") input.className = "";
   modal.style.display = "none";
 }
+
+export default { displayToDoForm };
