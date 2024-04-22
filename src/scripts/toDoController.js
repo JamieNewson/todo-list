@@ -125,12 +125,22 @@ function createToDoElement(toDo) {
     toDo.getDueDate().toLocaleDateString(),
     "dueDate"
   );
+  const toggleStateBtn = buildElement.createElementWithClass(
+    "span",
+    "done",
+    "material-symbols-outlined toggle-state"
+  );
 
-  toDoHeader.append(toDoTitle, toDoPriority);
+  toDoHeader.append(toDoTitle, toDoPriority, toggleStateBtn);
   toDoElement.append(toDoHeader, toDoDesc, toDoDueDate);
 
-  toDoElement.addEventListener("click", () => {
-    formHandler.displayToDoForm("update", toDo);
+  toDoElement.addEventListener("click", (e) => {
+    if (!e.target.classList.contains("toggle-state"))
+      formHandler.displayToDoForm("update", toDo);
+  });
+
+  toggleStateBtn.addEventListener("click", (e) => {
+    updateToDoState(toDo);
   });
 
   return toDoElement;
@@ -148,6 +158,15 @@ function updateToDoElement(toDo) {
     .toLocaleDateString();
   toDoElement.querySelector(".priority").innerText =
     updatedToDo.getFormattedPriority();
+}
+
+function updateToDoState(toDo) {
+  toDo.setState();
+  const toDoHeader = document
+    .getElementById(toDo.getID())
+    .querySelector(".toDo-header");
+
+  toDoHeader.classList.toggle("completed");
 }
 
 function getToDos() {

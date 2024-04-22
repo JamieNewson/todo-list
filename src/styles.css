@@ -219,6 +219,7 @@ select {
   overflow: hidden;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
   transition: 0.2s;
+  cursor: pointer;
 }
 
 .toDo-element:hover {
@@ -227,7 +228,7 @@ select {
 
 .toDo-header {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   background-color: #318ce7;
   padding: 3px 8px;
@@ -239,6 +240,10 @@ select {
 
 .toDo-header h3 {
   flex-grow: 1;
+}
+
+.priority {
+  font-size: 1.2rem;
 }
 
 .description {
@@ -254,4 +259,28 @@ select {
   border-radius: 5px 0 0 0;
   background-color: #e7313d;
   color: white;
+}
+
+.toggle-state {
+  width: 0;
+  font-size: 1.2rem;
+  margin-left: 5px;
+  color: rgba(255, 255, 255, 0);
+  transition: 0.2s;
+  line-height: 1.2rem;
+  height: 100%;
+}
+
+.toDo-element:hover .toggle-state {
+  color: rgba(255, 255, 255, 0.5);
+  width: 25px;
+}
+
+.toggle-state:hover {
+  color: rgba(255, 255, 255, 1) !important;
+  transition: 0.1s;
+}
+
+.completed {
+  background-color: green;
 }
