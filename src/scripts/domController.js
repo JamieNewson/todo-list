@@ -1,19 +1,16 @@
 import projectController from "./projectController.js";
 import toDoController from "./toDoController.js";
-import buildElement from "./createElement.js";
 
-const projectDisplay = document.querySelector(".projectDisplay");
 const projectList = document.querySelector(".projectList");
+const projectDisplayHeader = document.querySelector(".project-display-header");
+const toDoList = document.querySelector(".toDoList");
 
 function displayProjectList() {
   for (const project of projectController.getProjectList()) {
     projectList.appendChild(projectController.createProjectNavButton(project));
   }
-  projectDisplay.append(
-    displayActiveProject(),
-    displayToDoList(),
-    toDoController.createToDoButton()
-  );
+  displayActiveProject();
+  displayToDoList();
   resetSelection();
 }
 
@@ -23,27 +20,17 @@ function updateProjectList(project) {
 
 function displayActiveProject() {
   const currentProject = projectController.getActiveProject();
-  const element = document.createElement("div");
 
-  element.appendChild(
-    buildElement.createElementWithText("h2", currentProject.getName())
-  );
-  element.appendChild(
-    buildElement.createElementWithText("p", currentProject.getDescription())
-  );
-
-  return element;
+  projectDisplayHeader.querySelector("h2").innerText = currentProject.getName();
+  projectDisplayHeader.querySelector("p").innerText =
+    currentProject.getDescription();
 }
 
 function handleNav(e) {
   const targetID = e.target.id ? e.target.id : e.target.parentNode.id;
   projectController.setActiveProject(targetID);
-  projectDisplay.innerHTML = "";
-  projectDisplay.append(
-    displayActiveProject(),
-    displayToDoList(),
-    toDoController.createToDoButton()
-  );
+  displayActiveProject();
+  displayToDoList();
   resetSelection();
 }
 
@@ -56,36 +43,21 @@ function resetSelection() {
 }
 
 function displayToDoList() {
-  const toDoList = buildElement.createElementWithClass("ul", "", "toDoList");
   const projectToDos = toDoController.getToDos();
 
+  toDoList.innerHTML = "";
   for (const toDo of projectToDos) {
     toDoList.appendChild(toDoController.createToDoElement(toDo));
   }
-
-  return toDoList;
 }
 
 function updateToDoList(toDo) {
-  const toDoList = document.querySelector(".toDoList");
   toDoList.appendChild(toDoController.createToDoElement(toDo));
-}
-
-function updateToDoElement(toDo) {
-  const toDoElement = document.getElementById(toDo.getID());
-  toDoElement.querySelector(".title").innerText = toDo.getName();
-  toDoElement.querySelector(".description").innerText = toDo.getDescription();
-  toDoElement.querySelector(".dueDate").innerText = toDo
-    .getDueDate()
-    .toLocaleDateString();
-  toDoElement.querySelector(".priority").innerText =
-    toDo.getFormattedPriority();
 }
 
 export default {
   displayProjectList,
-  updateProjectList,
   handleNav,
+  updateProjectList,
   updateToDoList,
-  updateToDoElement,
 };

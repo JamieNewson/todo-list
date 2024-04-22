@@ -4,11 +4,16 @@ import domController from "./domController.js";
 import { validateProject, validateToDo } from "./inputValidation";
 
 const newProjectBtn = document.querySelector(".newProjectBtn");
-const newProjectModal = document.querySelector(".project-modal");
+const projectModal = document.querySelector(".project-modal");
+const newToDoBtn = document.querySelector(".newToDoBtn");
 const toDoModal = document.querySelector(".toDo-modal");
 
 newProjectBtn.addEventListener("click", (e) => {
-  newProjectModal.style.display = "block";
+  projectModal.style.display = "block";
+});
+
+newToDoBtn.addEventListener("click", (e) => {
+  displayToDoForm("create");
 });
 
 const projectForm = document.querySelector("#createProjectForm");
@@ -30,7 +35,7 @@ projectForm.addEventListener("submit", (e) => {
 projectForm.addEventListener("reset", (e) => {
   for (const input of e.target)
     if (input.className === "invalid") input.className = "";
-  newProjectModal.style.display = "none";
+  projectModal.style.display = "none";
 });
 
 const toDoForm = document.querySelector("#toDoForm");
@@ -41,9 +46,8 @@ toDoForm.addEventListener("submit", (e) => {
 
   if (!validateToDo(newToDo)) return;
 
-  if (e.submitter.id == "create")
-    domController.updateToDoList(toDoController.createToDo(newToDo));
-  else domController.updateToDoElement(toDoController.updateToDo(newToDo));
+  if (e.submitter.id == "create") domController.updateToDoList(newToDo);
+  else toDoController.updateToDoElement(newToDo);
 
   toDoForm.reset();
 });
@@ -56,8 +60,10 @@ toDoForm.addEventListener("reset", (e) => {
 
 function displayToDoForm(method, toDo) {
   displayButtons(method);
+
   if (method == "update") populateForm(toDo);
   else getInputs().dueDateInput.value = new Date().toISOString().split("T")[0];
+
   toDoModal.style.display = "block";
 }
 

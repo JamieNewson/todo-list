@@ -1,5 +1,4 @@
 import projectController from "./projectController.js";
-import domController from "./domController.js";
 import buildElement from "./createElement.js";
 import formHandler from "./formHandler.js";
 
@@ -88,11 +87,13 @@ function updateToDo(toDo) {
 }
 
 function createToDoElement(toDo) {
+  const newToDo = createToDo(toDo);
+
   const toDoElement = buildElement.createElementWithClassAndID(
     "li",
     "",
     "toDo-element",
-    toDo.getID()
+    newToDo.getID()
   );
   const toDoHeader = buildElement.createElementWithClass(
     "div",
@@ -101,22 +102,22 @@ function createToDoElement(toDo) {
   );
   const toDoTitle = buildElement.createElementWithClass(
     "h3",
-    toDo.getName(),
+    newToDo.getName(),
     "title"
   );
   const toDoPriority = buildElement.createElementWithClass(
     "span",
-    toDo.getFormattedPriority(),
+    newToDo.getFormattedPriority(),
     "priority"
   );
   const toDoDesc = buildElement.createElementWithClass(
     "p",
-    toDo.getDescription(),
+    newToDo.getDescription(),
     "description"
   );
   const toDoDueDate = buildElement.createElementWithClass(
     "p",
-    toDo.getDueDate().toLocaleDateString(),
+    newToDo.getDueDate().toLocaleDateString(),
     "dueDate"
   );
 
@@ -124,10 +125,24 @@ function createToDoElement(toDo) {
   toDoElement.append(toDoHeader, toDoDesc, toDoDueDate);
 
   toDoElement.addEventListener("click", () => {
-    formHandler.displayToDoForm("update", toDo);
+    formHandler.displayToDoForm("update", newToDo);
   });
 
   return toDoElement;
+}
+
+function updateToDoElement(toDo) {
+  const updatedToDo = updateToDo(toDo);
+
+  const toDoElement = document.getElementById(updatedToDo.getID());
+  toDoElement.querySelector(".title").innerText = updatedToDo.getName();
+  toDoElement.querySelector(".description").innerText =
+    updatedToDo.getDescription();
+  toDoElement.querySelector(".dueDate").innerText = updatedToDo
+    .getDueDate()
+    .toLocaleDateString();
+  toDoElement.querySelector(".priority").innerText =
+    updatedToDo.getFormattedPriority();
 }
 
 function getToDos() {
@@ -137,24 +152,8 @@ function getToDos() {
   );
 }
 
-function createToDoButton() {
-  const newToDoBtn = buildElement.createElementWithClass(
-    "button",
-    "+",
-    "newElementBtn newToDoBtn"
-  );
-
-  newToDoBtn.addEventListener("click", (e) => {
-    formHandler.displayToDoForm("create");
-  });
-
-  return newToDoBtn;
-}
-
 export default {
   getToDos,
-  createToDo,
-  updateToDo,
   createToDoElement,
-  createToDoButton,
+  updateToDoElement,
 };
