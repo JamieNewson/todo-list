@@ -43,7 +43,7 @@ function resetSelection() {
 }
 
 function displayToDoList() {
-  const projectToDos = toDoController.getToDos();
+  const projectToDos = toDoController.getProjectToDos();
 
   toDoList.innerHTML = "";
   for (const toDo of projectToDos) {

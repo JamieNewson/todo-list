@@ -1,5 +1,6 @@
 import domController from "./domController.js";
 import buildElement from "./createElement.js";
+import jsonHandler from "./jsonHandler.js";
 
 class Project {
   constructor(name, description, color) {
@@ -33,11 +34,7 @@ class Project {
 }
 
 let projects = [];
-
-let newProject = new Project("proj", "desc", "#fff");
-projects.push(newProject);
-
-let activeProject = projects[0];
+let activeProject;
 
 function createProject(projectInput) {
   let newProject = new Project(
@@ -46,9 +43,20 @@ function createProject(projectInput) {
     projectInput.colorInput.value
   );
 
-  projects.push(newProject);
+  jsonHandler.pushNewProject(newProject);
+  getProjects();
 
   return newProject;
+}
+
+function getProjects() {
+  const fetchedProjects = jsonHandler.getProjects();
+  if (!fetchedProjects) return;
+  const initialisedProjects = fetchedProjects.map((project) =>
+    Object.assign(new Project(), project)
+  );
+  projects = initialisedProjects;
+  activeProject = projects[0];
 }
 
 function createProjectNavButton(project) {
@@ -85,6 +93,7 @@ function getProject(projectID) {
 }
 
 function getProjectList() {
+  getProjects();
   return projects;
 }
 

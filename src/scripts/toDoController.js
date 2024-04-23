@@ -1,6 +1,7 @@
 import projectController from "./projectController.js";
 import buildElement from "./createElement.js";
 import formHandler from "./formHandler.js";
+import jsonHandler from "./jsonHandler.js";
 
 class ToDo {
   constructor(name, description, dueDate, priority) {
@@ -39,7 +40,7 @@ class ToDo {
   }
 
   getDueDate() {
-    return this.dueDate;
+    return new Date(this.dueDate);
   }
   setDueDate(dueDate) {
     this.dueDate = dueDate;
@@ -69,6 +70,15 @@ class ToDo {
 
 let toDos = [];
 
+function getToDos() {
+  const fetchedToDos = jsonHandler.getToDos();
+  if (!fetchedToDos) return;
+  const initialisedToDos = fetchedToDos.map((toDo) =>
+    Object.assign(new ToDo(), toDo)
+  );
+  toDos = initialisedToDos;
+}
+
 function createToDo(toDo) {
   let newToDo = new ToDo(
     toDo.nameInput.value,
@@ -77,7 +87,8 @@ function createToDo(toDo) {
     toDo.priorityInput.value
   );
 
-  toDos.push(newToDo);
+  jsonHandler.pushNewToDo(newToDo);
+  getToDos();
 
   return newToDo;
 }
@@ -89,6 +100,8 @@ function updateToDo(toDo) {
   element.setDescription(toDo.descriptionInput.value);
   element.setDueDate(new Date(toDo.dueDateInput.value));
   element.setPriority(toDo.priorityInput.value);
+
+  jsonHandler.updateToDo(element);
 
   return element;
 }
@@ -120,6 +133,8 @@ function createToDoElement(toDo) {
     toDo.getDescription(),
     "description"
   );
+  const dueDate = toDo.getDueDate();
+  console.log(dueDate.toLocaleDateString());
   const toDoDueDate = buildElement.createElementWithClass(
     "p",
     toDo.getDueDate().toLocaleDateString(),
@@ -169,7 +184,8 @@ function updateToDoState(toDo) {
   toDoHeader.classList.toggle("completed");
 }
 
-function getToDos() {
+function getProjectToDos() {
+  getToDos();
   return toDos.filter(
     (toDo) =>
       toDo.getParentID() === projectController.getActiveProject().getID()
@@ -177,7 +193,7 @@ function getToDos() {
 }
 
 export default {
-  getToDos,
+  getProjectToDos,
   createToDo,
   updateToDo,
   createToDoElement,
