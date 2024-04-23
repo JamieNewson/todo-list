@@ -12,7 +12,7 @@ function pushNewToDo(toDo) {
 function updateToDo(element) {
   const parsed = JSON.parse(toDos);
 }
-
+w;
 function getToDos() {
   return JSON.parse(localStorage.getItem("toDos"));
 }
