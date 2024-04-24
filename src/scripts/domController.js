@@ -6,7 +6,7 @@ const projectDisplayHeader = document.querySelector(".project-display-header");
 const toDoList = document.querySelector(".toDoList");
 
 function displayProjectList() {
-  for (const project of projectController.getProjectList()) {
+  for (const project of projectController.getProjects()) {
     projectList.appendChild(projectController.createProjectNavButton(project));
   }
   displayActiveProject();
@@ -20,6 +20,7 @@ function updateProjectList(project) {
 
 function displayActiveProject() {
   const currentProject = projectController.getActiveProject();
+  if (!currentProject) return;
 
   projectDisplayHeader.querySelector("h2").innerText = currentProject.getName();
   projectDisplayHeader.querySelector("p").innerText =

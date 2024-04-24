@@ -33,7 +33,6 @@ class Project {
   }
 }
 
-let projects = [];
 let activeProject;
 
 function createProject(projectInput) {
@@ -44,19 +43,8 @@ function createProject(projectInput) {
   );
 
   jsonHandler.pushNewProject(newProject);
-  getProjects();
 
   return newProject;
-}
-
-function getProjects() {
-  const fetchedProjects = jsonHandler.getProjects();
-  if (!fetchedProjects) return;
-  const initialisedProjects = fetchedProjects.map((project) =>
-    Object.assign(new Project(), project)
-  );
-  projects = initialisedProjects;
-  activeProject = projects[0];
 }
 
 function createProjectNavButton(project) {
@@ -88,27 +76,28 @@ function createProjectNavButton(project) {
   return element;
 }
 
-function getProject(projectID) {
-  return projects.find(({ id }) => id === projectID);
+function getProjects() {
+  activeProject = jsonHandler.fetchProjects()[0];
+  return jsonHandler.fetchProjects();
 }
 
-function getProjectList() {
-  getProjects();
-  return projects;
+function getProject(projectID) {
+  return jsonHandler.fetchProjects().find(({ id }) => id === projectID);
 }
 
 function getActiveProject() {
-  return activeProject;
+  return jsonHandler.fetchActiveProject();
 }
 
 function setActiveProject(projectID) {
-  activeProject = getProject(projectID);
+  jsonHandler.setActiveProject(getProject(projectID));
 }
 
 export default {
+  Project,
   getActiveProject,
   setActiveProject,
-  getProjectList,
+  getProjects,
   createProject,
   createProjectNavButton,
 };

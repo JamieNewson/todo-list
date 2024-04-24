@@ -68,15 +68,8 @@ class ToDo {
   }
 }
 
-let toDos = [];
-
-function getToDos() {
-  const fetchedToDos = jsonHandler.getToDos();
-  if (!fetchedToDos) return;
-  const initialisedToDos = fetchedToDos.map((toDo) =>
-    Object.assign(new ToDo(), toDo)
-  );
-  toDos = initialisedToDos;
+function getToDo(toDo) {
+  return jsonHandler.fetchToDos().find(({ id }) => id === toDo.id.value);
 }
 
 function createToDo(toDo) {
@@ -88,13 +81,12 @@ function createToDo(toDo) {
   );
 
   jsonHandler.pushNewToDo(newToDo);
-  getToDos();
 
   return newToDo;
 }
 
 function updateToDo(toDo) {
-  const element = toDos.find(({ id }) => id === toDo.id.value);
+  const element = getToDo(toDo);
 
   element.setName(toDo.nameInput.value);
   element.setDescription(toDo.descriptionInput.value);
@@ -133,8 +125,6 @@ function createToDoElement(toDo) {
     toDo.getDescription(),
     "description"
   );
-  const dueDate = toDo.getDueDate();
-  console.log(dueDate.toLocaleDateString());
   const toDoDueDate = buildElement.createElementWithClass(
     "p",
     toDo.getDueDate().toLocaleDateString(),
@@ -185,14 +175,14 @@ function updateToDoState(toDo) {
 }
 
 function getProjectToDos() {
-  getToDos();
-  return toDos.filter(
-    (toDo) =>
-      toDo.getParentID() === projectController.getActiveProject().getID()
-  );
+  const activeProjectID = projectController.getActiveProject().getID();
+  return jsonHandler
+    .fetchToDos()
+    .filter((toDo) => toDo.getParentID() === activeProjectID);
 }
 
 export default {
+  ToDo,
   getProjectToDos,
   createToDo,
   updateToDo,
