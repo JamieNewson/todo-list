@@ -23,7 +23,6 @@ function fetchActiveProject() {
 }
 
 function setActiveProject(project) {
-  console.log(project);
   saveToLocal("activeProject", project);
 }
 
@@ -46,7 +45,6 @@ function updateToDo(toDo) {
   const toDos = fetchToDos();
   const targetIndex = fetchToDos().findIndex(({ id }) => id === toDo.id);
   toDos[targetIndex] = toDo;
-  console.log(toDos);
   saveToLocal("toDos", toDos);
 }
 

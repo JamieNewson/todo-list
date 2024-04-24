@@ -108,7 +108,7 @@ function createToDoElement(toDo) {
   const toDoHeader = buildElement.createElementWithClass(
     "div",
     "",
-    "toDo-header"
+    `toDo-header ${toDo.getState() ? "completed" : ""}`
   );
   const toDoTitle = buildElement.createElementWithClass(
     "h3",
@@ -130,13 +130,24 @@ function createToDoElement(toDo) {
     toDo.getDueDate().toLocaleDateString(),
     "dueDate"
   );
+  const quickBtns = buildElement.createElementWithClass(
+    "span",
+    "",
+    "quick-btns"
+  );
   const toggleStateBtn = buildElement.createElementWithClass(
     "span",
-    "done",
-    "material-symbols-outlined toggle-state"
+    `${toDo.getState() ? "close" : "done"}`,
+    "material-symbols-outlined toggle-state pop-out-btn"
+  );
+  const deleteBtn = buildElement.createElementWithClass(
+    "span",
+    "delete",
+    "material-symbols-outlined delete-btn pop-out-btn"
   );
 
-  toDoHeader.append(toDoTitle, toDoPriority, toggleStateBtn);
+  quickBtns.append(toggleStateBtn, deleteBtn);
+  toDoHeader.append(toDoTitle, toDoPriority, quickBtns);
   toDoElement.append(toDoHeader, toDoDesc, toDoDueDate);
 
   toDoElement.addEventListener("click", (e) => {
@@ -167,11 +178,14 @@ function updateToDoElement(toDo) {
 
 function updateToDoState(toDo) {
   toDo.setState();
-  const toDoHeader = document
-    .getElementById(toDo.getID())
-    .querySelector(".toDo-header");
+  const toDoElement = document.getElementById(toDo.getID());
 
-  toDoHeader.classList.toggle("completed");
+  toDoElement.querySelector(".toDo-header").classList.toggle("completed");
+  toDoElement.querySelector(".toggle-state").innerText = `${
+    toDo.getState() ? "close" : "done"
+  }`;
+
+  jsonHandler.updateToDo(toDo);
 }
 
 function getProjectToDos() {

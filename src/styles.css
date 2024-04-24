@@ -261,23 +261,37 @@ select {
   color: white;
 }
 
-.toggle-state {
+.quick-btns {
   width: 0;
+  display: flex;
+  transition: 0.2s;
+}
+
+.pop-out-btn {
   font-size: 1.2rem;
-  margin-left: 5px;
+  margin-left: 3px;
   color: rgba(255, 255, 255, 0);
   transition: 0.2s;
   line-height: 1.2rem;
   height: 100%;
+  text-align: left;
 }
 
-.toDo-element:hover .toggle-state {
+.toDo-element:hover .quick-btns {
+  width: 40px;
+}
+
+.toDo-element:hover .quick-btns span {
   color: rgba(255, 255, 255, 0.5);
-  width: 25px;
 }
 
 .toggle-state:hover {
   color: rgba(255, 255, 255, 1) !important;
+  transition: 0.1s;
+}
+
+.delete-btn:hover {
+  color: rgb(255, 19, 19) !important;
   transition: 0.1s;
 }
 
