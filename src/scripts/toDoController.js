@@ -151,12 +151,19 @@ function createToDoElement(toDo) {
   toDoElement.append(toDoHeader, toDoDesc, toDoDueDate);
 
   toDoElement.addEventListener("click", (e) => {
-    if (!e.target.classList.contains("toggle-state"))
+    if (
+      !e.target.classList.contains("toggle-state") &&
+      !e.target.classList.contains("delete-btn")
+    )
       formHandler.displayToDoForm("update", toDo);
   });
 
   toggleStateBtn.addEventListener("click", (e) => {
     updateToDoState(toDo);
+  });
+
+  deleteBtn.addEventListener("click", (e) => {
+    deleteToDo(toDo, toDoElement);
   });
 
   return toDoElement;
@@ -186,6 +193,11 @@ function updateToDoState(toDo) {
   }`;
 
   jsonHandler.updateToDo(toDo);
+}
+
+function deleteToDo(toDo, toDoElement) {
+  toDoElement.remove();
+  jsonHandler.deleteToDo(toDo);
 }
 
 function getProjectToDos() {

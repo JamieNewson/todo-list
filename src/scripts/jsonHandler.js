@@ -48,6 +48,13 @@ function updateToDo(toDo) {
   saveToLocal("toDos", toDos);
 }
 
+function deleteToDo(toDo) {
+  const toDos = fetchToDos();
+  const targetIndex = fetchToDos().findIndex(({ id }) => id === toDo.id);
+  toDos.splice(targetIndex, 1);
+  saveToLocal("toDos", toDos);
+}
+
 function saveToLocal(key, list) {
   const stringified = JSON.stringify(list);
   localStorage.setItem(key, stringified);
@@ -61,4 +68,5 @@ export default {
   fetchToDos,
   pushNewToDo,
   updateToDo,
+  deleteToDo,
 };
