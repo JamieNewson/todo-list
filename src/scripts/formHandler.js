@@ -8,11 +8,11 @@ const projectModal = document.querySelector(".project-modal");
 const newToDoBtn = document.querySelector(".newToDoBtn");
 const toDoModal = document.querySelector(".toDo-modal");
 
-newProjectBtn.addEventListener("click", (e) => {
+newProjectBtn.addEventListener("click", () => {
   projectModal.style.display = "block";
 });
 
-newToDoBtn.addEventListener("click", (e) => {
+newToDoBtn.addEventListener("click", () => {
   displayToDoForm("create");
 });
 

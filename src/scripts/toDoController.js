@@ -158,11 +158,11 @@ function createToDoElement(toDo) {
       formHandler.displayToDoForm("update", toDo);
   });
 
-  toggleStateBtn.addEventListener("click", (e) => {
+  toggleStateBtn.addEventListener("click", () => {
     updateToDoState(toDo);
   });
 
-  deleteBtn.addEventListener("click", (e) => {
+  deleteBtn.addEventListener("click", () => {
     deleteToDo(toDo, toDoElement);
   });
 

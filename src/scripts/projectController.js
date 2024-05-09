@@ -33,6 +33,7 @@ class Project {
   }
 }
 
+// eslint-disable-next-line no-unused-vars
 let activeProject;
 
 function createProject(projectInput) {
